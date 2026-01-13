@@ -1,0 +1,40 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "oth-web",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-03-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".open-next/assets"
+  },
+  "vars": {
+				"BETTER_AUTH_URL": "https://otherwise.dev"
+			},
+  "observability": {
+    "enabled": true
+  },
+  "routes": [
+    {
+      "pattern": "otherwise.dev",
+      "custom_domain": true
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "oth-web-db",
+      "database_id": "923bbe1d-9c57-4909-b9ff-a475099686ff"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA_BUCKET",
+      "bucket_name": "oth-web-r2-media"
+    }
+  ]
+}
