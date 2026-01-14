@@ -8,6 +8,12 @@ import { Navigation } from "@/features/layout/components/navigation";
 import { Footer } from "@/features/layout/components/footer";
 import type { Post } from "@/db";
 import { PostCard } from "@/features/cms/components/PostCard";
+import {
+  motion,
+  FadeInUp,
+  staggerContainer,
+  staggerItem,
+} from "@/lib/motion";
 
 // New section components
 import { HeroSection } from "@/app/(marketing)/components/hero-section";
@@ -156,15 +162,15 @@ export default function Home() {
           id="work"
           className="py-16 md:py-24 border-t border-gray-300 dark:border-primary/30"
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-            <div className="mb-12 text-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <FadeInUp className="mb-12 text-center">
               <p className="text-sm font-medium text-primary mb-2">
                 SELECTED PROJECTS
               </p>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 Case Studies
               </h2>
-            </div>
+            </FadeInUp>
 
             {/* Loading State */}
             {featuredProjectsState.loading && (
@@ -202,22 +208,30 @@ export default function Home() {
               !featuredProjectsState.error &&
               displayProjects.length > 0 && (
                 <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                  <motion.div
+                    className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={staggerContainer}
+                  >
                     {displayProjects.map((project) => (
-                      <PostCard
+                      <motion.div
                         key={`${project.contentType}-${project.slug}`}
-                        item={project}
-                      />
+                        variants={staggerItem}
+                      >
+                        <PostCard item={project} />
+                      </motion.div>
                     ))}
-                  </div>
-                  <div className="mt-10 text-center">
+                  </motion.div>
+                  <FadeInUp className="mt-10 text-center">
                     <Link href="/posts?type=project">
                       <Button variant="outline" size="lg">
                         View All Projects{" "}
                         <ArrowUpRight className="ml-2 h-5 w-5" />
                       </Button>
                     </Link>
-                  </div>
+                  </FadeInUp>
                 </>
               )}
 

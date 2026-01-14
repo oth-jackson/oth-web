@@ -1,4 +1,12 @@
+"use client";
+
 import { Badge } from "@/ui/badge";
+import {
+  motion,
+  FadeInUp,
+  staggerContainerFast,
+  badgePopIn,
+} from "@/lib/motion";
 
 const capabilities = [
   "AI Engineering",
@@ -22,24 +30,34 @@ const capabilities = [
 export function CapabilitiesSection() {
   return (
     <section className="py-12 md:py-16 border-t border-gray-300 dark:border-primary/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-        <div className="mb-8 text-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeInUp className="mb-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
             Core Capabilities
           </h2>
-        </div>
+        </FadeInUp>
 
-        <div className="flex flex-wrap justify-center gap-3 max-w-6xl mx-auto">
+        <motion.div
+          className="flex flex-wrap justify-center gap-3 max-w-6xl mx-auto"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={staggerContainerFast}
+        >
           {capabilities.map((capability) => (
-            <Badge
+            <motion.div
               key={capability}
-              variant="outline"
-              className="px-4 py-1.5 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors cursor-default"
+              variants={badgePopIn}
             >
-              {capability}
-            </Badge>
+              <Badge
+                variant="outline"
+                className="px-4 py-1.5 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors cursor-default"
+              >
+                {capability}
+              </Badge>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

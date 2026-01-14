@@ -24,7 +24,7 @@ export function Navigation() {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-background border-b border-gray-300 dark:border-primary/30">
-      <div className="flex h-12 justify-between items-center max-w-8xl mx-auto px-4">
+      <div className="flex h-12 justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/otherwise-logo.svg"

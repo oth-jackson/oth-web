@@ -1,3 +1,5 @@
+"use client";
+
 import { Calendar, MapPin, Mail } from "lucide-react";
 import { Button } from "@/ui/button";
 import { Card, CardContent } from "@/ui/card";
@@ -12,13 +14,14 @@ import {
 import { Input } from "@/ui/input";
 import { Textarea } from "@/ui/textarea";
 import Link from "next/link";
+import { FadeInUp, ScaleIn } from "@/lib/motion";
 
 export function ContactSection() {
   return (
     <section id="contact" className="py-16 md:py-24 bg-secondary/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-          <div className="text-center lg:text-left">
+          <FadeInUp className="text-center lg:text-left">
             <p className="text-sm font-medium text-primary mb-2">GET IN TOUCH</p>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
               Let&apos;s Build Something Together
@@ -62,68 +65,70 @@ export function ContactSection() {
                 </Link>
               </div>
             </div>
-          </div>
+          </FadeInUp>
 
-          <Card className="border-gray-300 dark:border-primary/30">
-            <CardContent className="pt-0">
-              <div className="mb-6">
-                <h3 className="mt-2 text-xl font-semibold">Project inquiry</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Share a few details and we&apos;ll follow up shortly.
-                </p>
-              </div>
-              <form
-                action="mailto:hello@otherwise.llc"
-                method="post"
-                encType="text/plain"
-                className="space-y-6"
-              >
-                <FieldSet>
-                  <FieldLegend className="sr-only">Contact form</FieldLegend>
-                  <FieldGroup className="@container/field-group flex flex-col gap-6">
-                    <Field>
-                      <FieldLabel htmlFor="name">Full name</FieldLabel>
-                      <Input id="name" name="name" placeholder="Jane Doe" />
-                    </Field>
-                    <Field>
-                      <FieldLabel htmlFor="email">Email</FieldLabel>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="you@company.com"
-                        required
-                      />
-                    </Field>
-                    <Field>
-                      <FieldLabel htmlFor="company">Company</FieldLabel>
-                      <Input
-                        id="company"
-                        name="company"
-                        placeholder="Amco"
-                      />
-                    </Field>
-                    <Field>
-                      <FieldLabel htmlFor="message">Project details</FieldLabel>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        rows={5}
-                        placeholder="Tell us about your goals, timeline, and scope."
-                        required
-                      />
-                      <FieldDescription>
-                        We typically respond within two business days.
-                      </FieldDescription>
-                    </Field>
-                  </FieldGroup>
-                </FieldSet>
-                <Button type="submit" className="w-full">
-                  Send Message
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+          <ScaleIn>
+            <Card className="border-gray-300 dark:border-primary/30">
+              <CardContent className="pt-0">
+                <div className="mb-6">
+                  <h3 className="mt-2 text-xl font-semibold">Project inquiry</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Share a few details and we&apos;ll follow up shortly.
+                  </p>
+                </div>
+                <form
+                  action="mailto:hello@otherwise.llc"
+                  method="post"
+                  encType="text/plain"
+                  className="space-y-6"
+                >
+                  <FieldSet>
+                    <FieldLegend className="sr-only">Contact form</FieldLegend>
+                    <FieldGroup className="@container/field-group flex flex-col gap-6">
+                      <Field>
+                        <FieldLabel htmlFor="name">Full name</FieldLabel>
+                        <Input id="name" name="name" placeholder="Jane Doe" />
+                      </Field>
+                      <Field>
+                        <FieldLabel htmlFor="email">Email</FieldLabel>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          placeholder="you@company.com"
+                          required
+                        />
+                      </Field>
+                      <Field>
+                        <FieldLabel htmlFor="company">Company</FieldLabel>
+                        <Input
+                          id="company"
+                          name="company"
+                          placeholder="Amco"
+                        />
+                      </Field>
+                      <Field>
+                        <FieldLabel htmlFor="message">Project details</FieldLabel>
+                        <Textarea
+                          id="message"
+                          name="message"
+                          rows={5}
+                          placeholder="Tell us about your goals, timeline, and scope."
+                          required
+                        />
+                        <FieldDescription>
+                          We typically respond within two business days.
+                        </FieldDescription>
+                      </Field>
+                    </FieldGroup>
+                  </FieldSet>
+                  <Button type="submit" className="w-full">
+                    Send Message
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </ScaleIn>
         </div>
       </div>
     </section>
