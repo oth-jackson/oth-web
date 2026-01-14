@@ -3,6 +3,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/ui/button";
 import Link from "next/link";
+import { CalendarModal } from "@/components/calendar-modal";
 import { motion, easing } from "@/lib/motion";
 
 export function HeroSection() {
@@ -79,16 +80,12 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6, ease: easing.smooth }}
             >
-              <Link
-                href="https://calendar.app.google/MFTBAhkakDFsNekU7"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <CalendarModal>
                 <Button size="lg">
                   Book a Discovery Call
                   <ArrowUpRight className="h-5 w-5" />
                 </Button>
-              </Link>
+              </CalendarModal>
               <Link href="/posts?type=project">
                 <Button variant="outline" size="lg">
                   View Projects

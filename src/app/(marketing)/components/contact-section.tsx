@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, MapPin, Mail } from "lucide-react";
+import { MapPin, Mail } from "lucide-react";
 import { Button } from "@/ui/button";
 import { Card, CardContent } from "@/ui/card";
 import {
@@ -14,6 +14,7 @@ import {
 import { Input } from "@/ui/input";
 import { Textarea } from "@/ui/textarea";
 import Link from "next/link";
+import { CalendarModal } from "@/components/calendar-modal";
 import { FadeInUp, ScaleIn } from "@/lib/motion";
 
 export function ContactSection() {
@@ -32,17 +33,10 @@ export function ContactSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 mb-10">
-              <Link
-                href="https://calendar.app.google/MFTBAhkakDFsNekU7"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button size="lg">
-                  <Calendar className="h-5 w-5" />
-                  Book a Discovery Call
-                </Button>
-              </Link>
-              <Link href="mailto:hello@otherwise.llc">
+              <CalendarModal>
+                <Button size="lg">Book a Discovery Call</Button>
+              </CalendarModal>
+              <Link href="mailto:contact@otherwise.dev">
                 <Button variant="outline" size="lg">
                   <Mail className="h-5 w-5" />
                   Email Us
@@ -58,10 +52,10 @@ export function ContactSection() {
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 <Link
-                  href="mailto:hello@otherwise.llc"
+                  href="mailto:contact@otherwise.dev"
                   className="text-sm hover:text-foreground transition-colors"
                 >
-                  hello@otherwise.llc
+                  contact@otherwise.dev
                 </Link>
               </div>
             </div>
@@ -77,7 +71,7 @@ export function ContactSection() {
                   </p>
                 </div>
                 <form
-                  action="mailto:hello@otherwise.llc"
+                action="mailto:contact@otherwise.dev"
                   method="post"
                   encType="text/plain"
                   className="space-y-6"

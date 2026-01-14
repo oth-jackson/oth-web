@@ -23,7 +23,7 @@ const engagementOptions = [
       "Strategic roadmap",
     ],
     cta: "Get Started",
-    href: "mailto:hello@otherwise.llc?subject=Discovery Sprint Inquiry",
+    href: "mailto:contact@otherwise.dev?subject=Discovery Sprint Inquiry",
   },
   {
     name: "Fractional AI Lead",
@@ -36,7 +36,7 @@ const engagementOptions = [
       "Continuous delivery",
     ],
     cta: "Get Started",
-    href: "mailto:hello@otherwise.llc?subject=Fractional AI Lead Inquiry",
+    href: "mailto:contact@otherwise.dev?subject=Fractional AI Lead Inquiry",
     featured: true,
   },
   {
@@ -50,7 +50,7 @@ const engagementOptions = [
       "Long-term partnerships",
     ],
     cta: "Contact Us",
-    href: "mailto:hello@otherwise.llc?subject=Custom Engagement Inquiry",
+    href: "mailto:contact@otherwise.dev?subject=Custom Engagement Inquiry",
   },
 ];
 

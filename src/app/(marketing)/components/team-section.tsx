@@ -6,19 +6,24 @@ import {
   staggerContainer,
   staggerItem,
 } from "@/lib/motion";
+import Image from "next/image";
+import Link from "next/link";
+import { Linkedin } from "lucide-react";
 
 const teamMembers = [
   {
-    name: "Alex Morgan",
-    title: "Principal, AI Strategy",
-    bio: "Leads AI-native strategy and product roadmaps across enterprise and emerging tech engagements.",
-    initials: "AM",
+    name: "Jackson Barnes",
+    title: "Founder · Principal Designer & Engineer",
+    bio: "AI-native product leader with 8+ years across design, engineering, and spatial computing. Helped scale YC-backed startup from ≈ $10k MRR to $100k+ (> $1M ARR) within five months, and delivered XR/AI systems for enterprise clients.",
+    image: "/images/headshots/jackson-headshot.png",
+    linkedin: "https://www.linkedin.com/in/atxjacksonbarnes/",
   },
   {
-    name: "Jordan Lee",
-    title: "Lead Engineer",
-    bio: "Builds production-grade AI systems, full-stack platforms, and high-fidelity prototypes.",
-    initials: "JL",
+    name: "Andy Katsikapes",
+    title: "Lead Engineer · Immersive Systems",
+    bio: "Technologist and engineering manager specializing in XR, real-time systems, and network-aware APIs. Led immersive lab initiatives at Verizon and built large-scale interactive platforms across enterprise and media.",
+    image: "/images/headshots/andy-headshot.jpg",
+    linkedin: "https://linkedin.com/in/andy-katsikapes",
   },
 ];
 
@@ -29,7 +34,7 @@ export function TeamSection() {
         <FadeInUp className="mb-12 text-center">
           <p className="text-sm font-medium text-primary mb-2">THE TEAM</p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Senior, Hands-On Leadership
+            Expert, Hands-on Design and Engineering
           </h2>
         </FadeInUp>
 
@@ -43,17 +48,34 @@ export function TeamSection() {
           {teamMembers.map((member) => (
             <motion.div key={member.name} variants={staggerItem}>
               <div className="border border-gray-300 dark:border-primary/30 rounded-2xl overflow-hidden bg-background flex flex-col transition-shadow duration-300 hover:shadow-lg">
-                <div
-                  className="relative w-full aspect-[6/7] bg-gradient-to-br from-primary/20 via-accent/30 to-secondary flex items-center justify-center text-4xl font-semibold text-primary"
-                  role="img"
-                  aria-label={`${member.name} placeholder portrait`}
-                >
-                  {member.initials}
+                <div className="relative w-full aspect-[6/7] overflow-hidden bg-muted">
+                  <Image
+                    src={member.image}
+                    alt={`${member.name} headshot`}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 768px) 300px, 80vw"
+                  />
                 </div>
                 <div className="p-3 md:p-4">
-                  <h3 className="text-base font-semibold">{member.name}</h3>
-                  <p className="text-sm text-muted-foreground">{member.title}</p>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="text-xl font-semibold tracking-tight">
+                      {member.name}
+                    </h3>
+                    <Link
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-300 dark:border-primary/30 text-muted-foreground hover:text-primary transition-colors"
+                      aria-label={`${member.name} on LinkedIn`}
+                    >
+                      <Linkedin className="h-4 w-4" />
+                    </Link>
+                  </div>
+                  <p className="text-xs uppercase tracking-[0.08em] text-muted-foreground mt-1">
+                    {member.title}
+                  </p>
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                     {member.bio}
                   </p>
                 </div>
