@@ -16,8 +16,47 @@ import { Textarea } from "@/ui/textarea";
 import Link from "next/link";
 import { CalendarModal } from "@/components/calendar-modal";
 import { FadeInUp, ScaleIn } from "@/lib/motion";
+import { useState } from "react";
 
 export function ContactSection() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const data = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      company: formData.get('company') as string,
+      message: formData.get('message') as string,
+    };
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        form.reset();
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch {
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <section id="contact" className="py-16 md:py-24 bg-secondary/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -71,9 +110,7 @@ export function ContactSection() {
                   </p>
                 </div>
                 <form
-                action="mailto:contact@otherwise.dev"
-                  method="post"
-                  encType="text/plain"
+                  onSubmit={handleSubmit}
                   className="space-y-6"
                 >
                   <FieldSet>
@@ -116,8 +153,25 @@ export function ContactSection() {
                       </Field>
                     </FieldGroup>
                   </FieldSet>
-                  <Button type="submit" className="w-full">
-                    Send Message
+
+                  {submitStatus === 'success' && (
+                    <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+                      <p className="text-sm text-green-800 dark:text-green-200">
+                        Thank you! Your message has been sent successfully. We&apos;ll get back to you soon.
+                      </p>
+                    </div>
+                  )}
+
+                  {submitStatus === 'error' && (
+                    <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                      <p className="text-sm text-red-800 dark:text-red-200">
+                        Oops! Something went wrong. Please try again or email us directly at contact@otherwise.dev
+                      </p>
+                    </div>
+                  )}
+
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                   </Button>
                 </form>
               </CardContent>
