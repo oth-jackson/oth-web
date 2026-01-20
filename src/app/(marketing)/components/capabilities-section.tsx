@@ -9,22 +9,18 @@ import {
 } from "@/lib/motion";
 
 const capabilities = [
-  "AI Engineering",
-  "Agent Design",
-  "Unity3D",
-  "Azure",
-  "C#/.NET",
-  "Full-Stack Web",
-  "Digital Twins",
-  "Spatial Computing",
-  "RAG Systems",
-  "Product Design",
-  "UX/UI",
-  "Mobile Development",
-  "Cloudflare",
-  "3D Rendering",
-  "Innovation Strategy",
-  "Tech Consulting",
+  "AI Integration",
+  "MVP Development",
+  "Team Building",
+  "Technical Architecture",
+  "Design Systems",
+  "Product Strategy",
+  "Hiring Support",
+  "Tech Debt Cleanup",
+  "Investor-Ready Demos",
+  "Product Roadmapping",
+  "UX/UI Design",
+  "Full-Stack Engineering",
 ];
 
 export function CapabilitiesSection() {
@@ -33,7 +29,7 @@ export function CapabilitiesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeInUp className="mb-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Core Capabilities
+            Focus Areas
           </h2>
         </FadeInUp>
 

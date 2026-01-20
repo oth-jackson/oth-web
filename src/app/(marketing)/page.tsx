@@ -19,10 +19,8 @@ import {
 import { HeroSection } from "@/app/(marketing)/components/hero-section";
 import { ServicesSection } from "@/app/(marketing)/components/services-section";
 import { CapabilitiesSection } from "@/app/(marketing)/components/capabilities-section";
-import { PricingSection } from "@/app/(marketing)/components/pricing-section";
-import { ProcessSection } from "@/app/(marketing)/components/process-section";
-import { AboutSection } from "@/app/(marketing)/components/about-section";
 import { TeamSection } from "@/app/(marketing)/components/team-section";
+import { AboutSection } from "@/app/(marketing)/components/about-section";
 import { ContactSection } from "@/app/(marketing)/components/contact-section";
 
 // Types for better type safety
@@ -151,11 +149,11 @@ export default function Home() {
         {/* Capabilities Section */}
         <CapabilitiesSection />
 
-        {/* Services Section */}
-        <ServicesSection />
+        {/* Team Section */}
+        <TeamSection />
 
-        {/* Process Section */}
-        <ProcessSection />
+        {/* Engagements Section */}
+        <ServicesSection />
 
         {/* Featured Projects Section */}
         <section
@@ -246,17 +244,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Pricing Section */}
-        <PricingSection />
+        {/* Contact Section */}
+        <ContactSection />
 
         {/* About Section */}
         <AboutSection />
-
-        {/* Team Section */}
-        <TeamSection />
-
-        {/* Contact Section */}
-        <ContactSection />
       </div>
 
       <Footer />

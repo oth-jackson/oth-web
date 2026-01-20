@@ -35,43 +35,32 @@ export function HeroSection() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full md:-translate-y-6">
           <div className="max-w-4xl">
             <motion.p
-              className="text-xs uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-8"
+              className="text-base uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: easing.smooth }}
             >
-              AI‑Native by Design
+              For Growing Teams
             </motion.p>
 
-            <h1 className="text-[3.25rem] sm:text-[3.75rem] md:text-[4.75rem] lg:text-[6rem] font-semibold leading-[0.95] tracking-[-0.03em] mb-8">
-              <motion.span
-                className="inline-block"
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.15, ease: easing.smoothOut }}
-              >
-                Digital Product
-              </motion.span>
-              <br />
-              <motion.span
-                className="inline-block"
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.3, ease: easing.smoothOut }}
-              >
-                Innovation
-              </motion.span>
-            </h1>
+            <motion.h1
+              className="text-[3.25rem] sm:text-[3.75rem] md:text-[4.75rem] lg:text-[6rem] font-semibold leading-[0.95] tracking-[-0.03em] mb-8"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.15, ease: easing.smoothOut }}
+            >
+              Fractional Product Leadership
+            </motion.h1>
 
             <motion.p
               className="text-lg md:text-xl leading-relaxed text-muted-foreground max-w-2xl mb-12"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.45, ease: easing.smooth }}
+              transition={{ duration: 0.6, delay: 0.3, ease: easing.smooth }}
             >
-              Strategic AI, AR/VR, Telecom, Digital Twin, and Product Consulting,
-              Design, and Engineering that bridges cutting‑edge models with
-              real‑world business applications.
+              Expert design and engineering leadership from people who&apos;ve helped
+              scale products, hired teams, and shipped under pressure. We&apos;re
+              not advisors, we&apos;re operators.
             </motion.p>
 
             <motion.div
