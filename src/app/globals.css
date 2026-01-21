@@ -288,6 +288,21 @@
   }
 }
 
+/* Leva controls override - ensure always interactive */
+[data-leva-root],
+#leva__root,
+.leva-c-kWgxhW {
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  position: fixed !important;
+}
+
+[data-leva-root] *,
+#leva__root *,
+.leva-c-kWgxhW * {
+  pointer-events: auto !important;
+}
+
 /* Animation utilities */
 .animate-fade-in {
   animation: fadeIn 0.5s ease-in-out forwards;

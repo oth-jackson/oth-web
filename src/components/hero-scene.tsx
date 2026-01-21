@@ -35,7 +35,7 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF("/models/logo.gltf");
   
-  const { logoScale, baseRotX, baseRotY, baseRotZ, lightX, lightY, lightZ } = useControls("Logo", {
+  const { logoScale, baseRotX, baseRotY, baseRotZ, lightX, lightY, lightZ, edgeThreshold } = useControls("Logo", {
     logoScale: { value: 0.02, min: 0.001, max: 1, step: 0.001, label: "Logo Scale" },
     baseRotX: { value: 0, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot X" },
     baseRotY: { value: 2.24, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot Y" },
@@ -43,33 +43,43 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
     lightX: { value: 1.0, min: -2, max: 2, step: 0.1, label: "Light X" },
     lightY: { value: 2, min: -2, max: 2, step: 0.1, label: "Light Y" },
     lightZ: { value: 1.0, min: -2, max: 2, step: 0.1, label: "Light Z" },
+    edgeThreshold: { value: 0.6, min: 0.1, max: 1.0, step: 0.05, label: "Edge Width" },
   });
   
   // Create dithering shader material
   const ditheringMaterial = useMemo(() => {
     const color = isDark ? new THREE.Color("#3dbfaf") : new THREE.Color("#2aa090");
+    const edgeColor = isDark ? new THREE.Color("#0a4a40") : new THREE.Color("#064030");
     
     return new THREE.ShaderMaterial({
       uniforms: {
         uColor: { value: color },
         uLightDir: { value: new THREE.Vector3(lightX, lightY, lightZ) },
+        uEdgeColor: { value: edgeColor },
+        uEdgeThreshold: { value: edgeThreshold },
       },
       vertexShader: `
         varying vec3 vNormal;
         varying vec3 vWorldPosition;
+        varying vec3 vViewDir;
         
         void main() {
           vNormal = normalize(normalMatrix * normal);
           vec4 worldPos = modelMatrix * vec4(position, 1.0);
           vWorldPosition = worldPos.xyz;
+          // View direction for Fresnel edge detection
+          vViewDir = normalize(cameraPosition - worldPos.xyz);
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
       fragmentShader: `
         uniform vec3 uColor;
         uniform vec3 uLightDir;
+        uniform vec3 uEdgeColor;
+        uniform float uEdgeThreshold;
         varying vec3 vNormal;
         varying vec3 vWorldPosition;
+        varying vec3 vViewDir;
         
         // 8x8 Bayer dither pattern
         float dither8x8(vec2 position, float brightness) {
@@ -90,6 +100,10 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
         }
         
         void main() {
+          // Fresnel-based edge detection - edges where surface faces away from camera
+          float fresnel = 1.0 - abs(dot(normalize(vNormal), normalize(vViewDir)));
+          float edgeFactor = smoothstep(1.0 - uEdgeThreshold, 1.0, fresnel);
+          
           // Main light from controls
           vec3 lightDir1 = normalize(uLightDir);
           // Secondary fill light
@@ -111,11 +125,14 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
           vec3 lightColor = vec3(1.0, 1.0, 1.0);
           vec3 finalColor = mix(darkColor, lightColor, dithered);
           
+          // Apply edge outline on silhouette
+          finalColor = mix(finalColor, uEdgeColor, edgeFactor);
+          
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
     });
-  }, [isDark, lightX, lightY, lightZ]);
+  }, [isDark, lightX, lightY, lightZ, edgeThreshold]);
   
   // Clone the scene so we can modify materials
   const clonedScene = useMemo(() => {
@@ -131,12 +148,24 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
     return clone;
   }, [scene, ditheringMaterial]);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     if (!groupRef.current) return;
-    // Subtly track mouse position
+    
+    const time = state.clock.elapsedTime;
+    
+    // Subtle autonomous floating motion
+    const floatX = Math.sin(time * 0.5) * 0.02;
+    const floatY = Math.cos(time * 0.4) * 0.015;
+    const floatZ = Math.sin(time * 0.3) * 0.01;
+    
+    // Combine mouse tracking with subtle float
     easing.damp3(
       groupRef.current.rotation,
-      [-mouse.y * 0.3, mouse.x * 0.3, 0],
+      [
+        -mouse.y * 0.3 + floatX,
+        mouse.x * 0.3 + floatY,
+        floatZ
+      ],
       0.25,
       delta
     );
@@ -371,15 +400,17 @@ export function HeroScene() {
   const mouse = useGlobalMouse();
 
   return (
-    <div className="absolute inset-0 w-full h-full">
+    <>
       <Leva hidden />
-      <Canvas
-        camera={{ position: [0, 0, 9], fov: 45 }}
-        gl={{ antialias: true, alpha: true }}
-        dpr={[1, 1.5]}
-      >
-        <Scene isDark={isDark} mouse={mouse} />
-      </Canvas>
-    </div>
+      <div className="absolute inset-0 w-full h-full">
+        <Canvas
+          camera={{ position: [0, 0, 9], fov: 45 }}
+          gl={{ antialias: true, alpha: true }}
+          dpr={[1, 1.5]}
+        >
+          <Scene isDark={isDark} mouse={mouse} />
+        </Canvas>
+      </div>
+    </>
   );
 }
