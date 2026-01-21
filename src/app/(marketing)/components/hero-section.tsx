@@ -118,9 +118,10 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15, ease: easing.smoothOut }}
-            >
-              Fractional Product Leadership
-            </motion.h1>
+              >
+                <span className="block">Ready to scale?</span>
+                <span className="block mt-2 md:mt-3">Let&apos;s build it.</span>
+              </motion.h1>
 
             <motion.p
               className="text-lg md:text-xl leading-relaxed text-muted-foreground max-w-2xl mb-8"
@@ -128,9 +129,8 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: easing.smooth }}
             >
-              Expert design and engineering leadership from people who&apos;ve helped
-              scale products, hired teams, and shipped under pressure. We&apos;re
-              not advisors, we&apos;re operators.
+              Expert design and engineering leads from people who&apos;ve helped
+              scale products to millions of users, hired teams, and shipped under pressure. We&apos;re ready to help you do the same.
             </motion.p>
 
             <motion.div
