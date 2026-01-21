@@ -15,8 +15,47 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Otherwise",
+  metadataBase: new URL("https://otherwise.dev"),
+  title: {
+    default: "Otherwise",
+    template: "%s | Otherwise",
+  },
   description: "Otherwise — AI-native strategy, design, and engineering.",
+  keywords: [
+    "AI",
+    "artificial intelligence",
+    "software engineering",
+    "design",
+    "strategy",
+    "consulting",
+    "AI-native",
+    "machine learning",
+    "product development",
+  ],
+  authors: [{ name: "Otherwise" }],
+  creator: "Otherwise",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://otherwise.dev",
+    siteName: "Otherwise",
+    title: "Otherwise",
+    description: "Otherwise — AI-native strategy, design, and engineering.",
+    images: [
+      {
+        url: "/images/meta/thumbnail-preview.png",
+        width: 1200,
+        height: 630,
+        alt: "Otherwise",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Otherwise",
+    description: "Otherwise — AI-native strategy, design, and engineering.",
+    images: ["/images/meta/thumbnail-preview.png"],
+  },
 };
 
 export default function RootLayout({
