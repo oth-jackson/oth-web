@@ -3,7 +3,7 @@
 import * as THREE from "three";
 import { useRef, useEffect, useState, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Billboard, useGLTF } from "@react-three/drei";
+import { Float, Billboard, useGLTF } from "@react-three/drei";
 import { easing } from "maath";
 import { useTheme } from "next-themes";
 import { useControls, Leva } from "leva";
@@ -37,8 +37,8 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
   
   const { logoScale, baseRotX, baseRotY, baseRotZ, lightX, lightY, lightZ, edgeThreshold } = useControls("Logo", {
     logoScale: { value: 0.02, min: 0.001, max: 1, step: 0.001, label: "Logo Scale" },
-    baseRotX: { value: 0, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot X" },
-    baseRotY: { value: 2.24, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot Y" },
+    baseRotX: { value: -0.15, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot X" },
+    baseRotY: { value: 2.35, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot Y" },
     baseRotZ: { value: 0, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot Z" },
     lightX: { value: 1.0, min: -2, max: 2, step: 0.1, label: "Light X" },
     lightY: { value: 2, min: -2, max: 2, step: 0.1, label: "Light Y" },
@@ -159,8 +159,9 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
     const floatZ = Math.sin(time * 0.3) * 0.01;
     
     // Combine mouse tracking with subtle float
+    // Cast rotation as any to work with damp3 (Euler is compatible at runtime)
     easing.damp3(
-      groupRef.current.rotation,
+      groupRef.current.rotation as unknown as THREE.Vector3,
       [
         -mouse.y * 0.3 + floatX,
         mouse.x * 0.3 + floatY,

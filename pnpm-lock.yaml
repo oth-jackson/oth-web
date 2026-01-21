@@ -162,6 +162,9 @@ importers:
       '@types/react-syntax-highlighter':
         specifier: ^15.5.13
         version: 15.5.13
+      '@types/three':
+        specifier: ^0.182.0
+        version: 0.182.0
       '@types/uuid':
         specifier: ^10.0.0
         version: 10.0.0

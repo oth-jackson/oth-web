@@ -98,9 +98,9 @@ export function HeroSection() {
         <HeroScene />
       </motion.div>
 
-      <div className="min-h-[90vh] flex items-center relative z-10">
+      <div className="min-h-0 md:min-h-[90vh] flex items-start md:items-center relative z-10">
         <motion.div 
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full md:-translate-y-24 lg:-translate-y-32"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-6 md:py-20 w-full md:-translate-y-24 lg:-translate-y-32"
           style={{ y: contentY }}
         >
           <div>
@@ -145,8 +145,8 @@ export function HeroSection() {
                   <ArrowUpRight className="h-5 w-5" />
                 </Button>
               </CalendarModal>
-              <Link href="/posts?type=project">
-                <Button variant="ghost" size="lg" className="bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 border border-neutral-200 dark:border-neutral-700">
+              <Link href="/posts?type=project" className="w-full sm:w-auto">
+                <Button variant="ghost" size="lg" className="w-full sm:w-auto bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 border border-neutral-200 dark:border-neutral-700">
                   Our Work
                 </Button>
               </Link>
