@@ -42,35 +42,88 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
     baseRotZ: { value: 0, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot Z" },
   });
   
+  // Create dithering shader material
+  const ditheringMaterial = useMemo(() => {
+    const color = isDark ? new THREE.Color("#3dbfaf") : new THREE.Color("#2aa090");
+    
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        uColor: { value: color },
+      },
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vWorldPosition;
+        
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          vec4 worldPos = modelMatrix * vec4(position, 1.0);
+          vWorldPosition = worldPos.xyz;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 uColor;
+        varying vec3 vNormal;
+        varying vec3 vWorldPosition;
+        
+        // 8x8 Bayer dither pattern
+        float dither8x8(vec2 position, float brightness) {
+          const float dither[64] = float[64](
+            0.0/64.0, 32.0/64.0, 8.0/64.0, 40.0/64.0, 2.0/64.0, 34.0/64.0, 10.0/64.0, 42.0/64.0,
+            48.0/64.0, 16.0/64.0, 56.0/64.0, 24.0/64.0, 50.0/64.0, 18.0/64.0, 58.0/64.0, 26.0/64.0,
+            12.0/64.0, 44.0/64.0, 4.0/64.0, 36.0/64.0, 14.0/64.0, 46.0/64.0, 6.0/64.0, 38.0/64.0,
+            60.0/64.0, 28.0/64.0, 52.0/64.0, 20.0/64.0, 62.0/64.0, 30.0/64.0, 54.0/64.0, 22.0/64.0,
+            3.0/64.0, 35.0/64.0, 11.0/64.0, 43.0/64.0, 1.0/64.0, 33.0/64.0, 9.0/64.0, 41.0/64.0,
+            51.0/64.0, 19.0/64.0, 59.0/64.0, 27.0/64.0, 49.0/64.0, 17.0/64.0, 57.0/64.0, 25.0/64.0,
+            15.0/64.0, 47.0/64.0, 7.0/64.0, 39.0/64.0, 13.0/64.0, 45.0/64.0, 5.0/64.0, 37.0/64.0,
+            63.0/64.0, 31.0/64.0, 55.0/64.0, 23.0/64.0, 61.0/64.0, 29.0/64.0, 53.0/64.0, 21.0/64.0
+          );
+          int x = int(mod(position.x, 8.0));
+          int y = int(mod(position.y, 8.0));
+          float threshold = dither[x + y * 8];
+          return step(threshold, brightness);
+        }
+        
+        void main() {
+          // Lighting from multiple directions
+          vec3 lightDir1 = normalize(vec3(1.0, 1.0, 1.0));
+          vec3 lightDir2 = normalize(vec3(-1.0, 0.5, 0.5));
+          
+          float diff1 = max(dot(vNormal, lightDir1), 0.0);
+          float diff2 = max(dot(vNormal, lightDir2), 0.0) * 0.5;
+          float ambient = 0.4;
+          
+          float brightness = ambient + diff1 * 0.5 + diff2 * 0.3;
+          brightness = clamp(brightness, 0.0, 1.0);
+          
+          // Apply dithering at larger scale
+          vec2 screenPos = gl_FragCoord.xy / 2.0;
+          float dithered = dither8x8(screenPos, brightness);
+          
+          // Mix between dark and bright versions of the color
+          vec3 darkColor = uColor * 0.4;
+          vec3 lightColor = uColor * 1.4;
+          vec3 finalColor = mix(darkColor, lightColor, dithered);
+          
+          gl_FragColor = vec4(finalColor, 1.0);
+        }
+      `,
+    });
+  }, [isDark]);
+  
   // Clone the scene so we can modify materials
   const clonedScene = useMemo(() => {
     const clone = scene.clone();
-    // Deep, dark green color
-    const color = isDark ? "#1a6b5f" : "#145a50";
     
     clone.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
-        // Liquid glass material with deep green
-        mesh.material = new THREE.MeshPhysicalMaterial({
-          color: color,
-          emissive: color,
-          emissiveIntensity: 0.6,
-          metalness: 0.15,
-          roughness: 0.02,
-          transmission: 0.8,
-          thickness: 2.5,
-          ior: 1.6,
-          transparent: true,
-          opacity: 0.95,
-          clearcoat: 1,
-          clearcoatRoughness: 0.05,
-        });
+        mesh.material = ditheringMaterial;
       }
     });
     
     return clone;
-  }, [scene, isDark]);
+  }, [scene, ditheringMaterial]);
 
   useFrame((_, delta) => {
     if (!groupRef.current) return;
