@@ -29,9 +29,9 @@ export function Navigation() {
           <Image
             src="/otherwise-logo.svg"
             alt="Otherwise Logo"
-            width={20}
-            height={20}
-            className="w-5 h-5 dark:invert"
+            width={28}
+            height={28}
+            className="w-7 h-7 dark:invert"
           />
           <span className="font-medium">Otherwise</span>
         </Link>
