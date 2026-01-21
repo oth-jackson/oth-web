@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { ArrowUpRight, Linkedin } from "lucide-react";
+import { ArrowUpRight, Linkedin, Twitter, Mail } from "lucide-react";
 import { Button } from "@/ui/button";
 import Link from "next/link";
 import { CalendarModal } from "@/components/calendar-modal";
@@ -16,7 +16,7 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="min-h-[80vh] relative bg-background overflow-hidden"
+      className="min-h-[90vh] relative bg-background overflow-hidden"
     >
       {/* Subtle halftone/dot pattern overlay for left side */}
       <div
@@ -41,7 +41,7 @@ export function HeroSection() {
 
       {/* 3D Scene - Extended panel that bleeds into left side */}
       <motion.div
-        className="hidden lg:block absolute right-0 top-0 h-full w-[45vw]"
+        className="hidden lg:block absolute right-0 top-0 h-full w-[50vw]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, delay: 0.5, ease: easing.smoothOut }}
@@ -53,11 +53,11 @@ export function HeroSection() {
         <HeroScene />
       </motion.div>
 
-      <div className="min-h-[80vh] flex items-center relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full md:-translate-y-12 lg:-translate-y-16">
-          <div className="max-w-4xl">
+      <div className="min-h-[90vh] flex items-center relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full md:-translate-y-24 lg:-translate-y-32">
+          <div>
             <motion.p
-              className="text-base uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-8"
+              className="text-base uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: easing.smooth }}
@@ -66,7 +66,7 @@ export function HeroSection() {
             </motion.p>
 
             <motion.h1
-              className="text-[3.25rem] sm:text-[3.75rem] md:text-[4.75rem] lg:text-[6rem] font-semibold leading-[0.95] tracking-[-0.03em] mb-8"
+              className="text-[3.25rem] sm:text-[3.75rem] md:text-[4.75rem] lg:text-[6rem] font-semibold leading-[0.95] tracking-[-0.03em] mb-6 max-w-4xl"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15, ease: easing.smoothOut }}
@@ -75,7 +75,7 @@ export function HeroSection() {
             </motion.h1>
 
             <motion.p
-              className="text-lg md:text-xl leading-relaxed text-muted-foreground max-w-2xl mb-12"
+              className="text-lg md:text-xl leading-relaxed text-muted-foreground max-w-2xl mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: easing.smooth }}
@@ -86,7 +86,7 @@ export function HeroSection() {
             </motion.p>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-4 max-w-xl lg:max-w-md"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6, ease: easing.smooth }}
@@ -102,14 +102,35 @@ export function HeroSection() {
                   View Projects
                 </Button>
               </Link>
+            </motion.div>
+
+            <motion.div
+              className="flex gap-0.5 mt-5"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8, ease: easing.smooth }}
+            >
               <Link
                 href="https://www.linkedin.com/company/otherwise-company"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button variant="ghost" size="lg">
-                  <Linkedin className="h-5 w-5" />
-                  LinkedIn
+                <Button variant="ghost" size="icon" className="h-9 w-9">
+                  <Linkedin className="!h-5 !w-5" />
+                </Button>
+              </Link>
+              <Link
+                href="https://twitter.com/otherwiseco"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="ghost" size="icon" className="h-9 w-9">
+                  <Twitter className="!h-5 !w-5" />
+                </Button>
+              </Link>
+              <Link href="mailto:contact@otherwise.dev">
+                <Button variant="ghost" size="icon" className="h-9 w-9">
+                  <Mail className="!h-5 !w-5" />
                 </Button>
               </Link>
             </motion.div>

@@ -3,20 +3,22 @@
 import * as THREE from "three";
 import { useRef, useEffect, useState, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Billboard } from "@react-three/drei";
+import { Float, MeshDistortMaterial, Billboard, useGLTF } from "@react-three/drei";
 import { easing } from "maath";
 import { useTheme } from "next-themes";
 import { useControls } from "leva";
 
-// Global mouse position hook
+// Global mouse position hook - offset for 3D scene being on right side
 function useGlobalMouse() {
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      // Normalize to -1 to 1 range based on window size
+      // Normalize to -1 to 1 range, centered on the right half of the screen
+      // The 3D scene is roughly on the right 50% of the viewport
+      const sceneCenter = window.innerWidth * 0.75; // Center of the right half
       setMouse({
-        x: (e.clientX / window.innerWidth) * 2 - 1,
+        x: ((e.clientX - sceneCenter) / (window.innerWidth * 0.5)) * 2,
         y: -(e.clientY / window.innerHeight) * 2 + 1,
       });
     };
@@ -28,50 +30,59 @@ function useGlobalMouse() {
   return mouse;
 }
 
-// Abstract logo representation using 4 rounded boxes (representing the 4 quadrants of the Otherwise logo)
+// 3D Logo model loaded from GLTF
 function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: number } }) {
   const groupRef = useRef<THREE.Group>(null);
+  const { scene } = useGLTF("/models/logo.gltf");
+  
+  const { logoScale, baseRotX, baseRotY, baseRotZ } = useControls("Logo", {
+    logoScale: { value: 0.02, min: 0.001, max: 1, step: 0.001, label: "Logo Scale" },
+    baseRotX: { value: 0, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot X" },
+    baseRotY: { value: 2.64, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot Y" },
+    baseRotZ: { value: 0, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot Z" },
+  });
+  
+  // Clone the scene so we can modify materials
+  const clonedScene = useMemo(() => {
+    const clone = scene.clone();
+    // Primary green color matching the button color
+    // Light: oklch(0.4246 0.0305 174.09) ≈ #4a6e6b
+    // Dark: oklch(0.5 0.04 174.09) ≈ #5a8582
+    const color = isDark ? "#5a8582" : "#4a6e6b";
+    
+    clone.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.material = new THREE.MeshBasicMaterial({ color });
+      }
+    });
+    
+    return clone;
+  }, [scene, isDark]);
 
   useFrame((_, delta) => {
     if (!groupRef.current) return;
     // Subtly track mouse position
     easing.damp3(
       groupRef.current.rotation,
-      [-mouse.y * 0.4, mouse.x * 0.4, 0],
+      [-mouse.y * 0.3, mouse.x * 0.3, 0],
       0.25,
       delta
     );
   });
 
-  const color = isDark ? "#ffffff" : "#1a1a1a";
-  const gap = 0.12;
-  const size = 0.35;
-
   return (
-    <group ref={groupRef} scale={1.3}>
-      {/* Top left */}
-      <mesh position={[-size / 2 - gap / 2, size / 2 + gap / 2, 0]}>
-        <boxGeometry args={[size, size, 0.08]} />
-        <meshBasicMaterial color={color} />
-      </mesh>
-      {/* Top right */}
-      <mesh position={[size / 2 + gap / 2, size / 2 + gap / 2, 0]}>
-        <boxGeometry args={[size, size, 0.08]} />
-        <meshBasicMaterial color={color} />
-      </mesh>
-      {/* Bottom left */}
-      <mesh position={[-size / 2 - gap / 2, -size / 2 - gap / 2, 0]}>
-        <boxGeometry args={[size, size, 0.08]} />
-        <meshBasicMaterial color={color} />
-      </mesh>
-      {/* Bottom right */}
-      <mesh position={[size / 2 + gap / 2, -size / 2 - gap / 2, 0]}>
-        <boxGeometry args={[size, size, 0.08]} />
-        <meshBasicMaterial color={color} />
-      </mesh>
+    <group ref={groupRef} scale={logoScale}>
+      {/* Base rotation to correct model orientation */}
+      <group rotation={[baseRotX, baseRotY, baseRotZ]}>
+        <primitive object={clonedScene} />
+      </group>
     </group>
   );
 }
+
+// Preload the model
+useGLTF.preload("/models/logo.gltf");
 
 function MorphingBlob({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: number } }) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -89,23 +100,7 @@ function MorphingBlob({ isDark, mouse }: { isDark: boolean; mouse: { x: number; 
   return (
     <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.4}>
       <group scale={blobScale}>
-        {/* Transparent blob */}
-        <mesh ref={meshRef} scale={1.0}>
-          <icosahedronGeometry args={[1, 32]} />
-          <MeshDistortMaterial
-            color="#ffffff"
-            emissive="#ffffff"
-            emissiveIntensity={0.1}
-            roughness={1}
-            metalness={0}
-            distort={0.3}
-            speed={1.5}
-            transparent
-            opacity={0.35}
-          />
-        </mesh>
-
-        {/* Logo inside - tracks mouse */}
+        {/* Logo - tracks mouse */}
         <LogoShape isDark={isDark} mouse={mouse} />
       </group>
     </Float>
@@ -136,11 +131,13 @@ function CarouselCard({
   angle,
   radius,
   isDark,
+  cardSize,
   children
 }: { 
   angle: number;
   radius: number;
   isDark: boolean;
+  cardSize: number;
   children?: React.ReactNode;
 }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -152,11 +149,14 @@ function CarouselCard({
   const x = Math.sin(angle) * radius;
   const y = Math.cos(angle) * radius;
 
-  // Create rounded rectangle geometry
+  // Create rounded rectangle geometry - size based on cardSize prop
   const roundedRectGeometry = useMemo(() => {
-    const shape = createRoundedRectShape(1.8, 1.2, 0.12);
+    const width = 1.8 * cardSize;
+    const height = 1.2 * cardSize;
+    const cornerRadius = 0.12 * cardSize;
+    const shape = createRoundedRectShape(width, height, cornerRadius);
     return new THREE.ShapeGeometry(shape);
-  }, []);
+  }, [cardSize]);
 
   // Scale and fade based on depth - smaller/faded when behind, larger/opaque when in front
   useFrame(() => {
@@ -169,13 +169,17 @@ function CarouselCard({
     const z = worldPos.current.z;
     const minScale = 0.4;
     const maxScale = 1.0;
-    const minOpacity = 0.15;
+    const minOpacity = 0.35;
     const maxOpacity = 0.95;
     
     // Normalize z from [-radius, +radius] to [0, 1]
-    const normalizedZ = (z + radius) / (radius * 2);
-    const scale = minScale + (maxScale - minScale) * normalizedZ;
-    const opacity = minOpacity + (maxOpacity - minOpacity) * normalizedZ;
+    const normalizedZ = Math.max(0, Math.min(1, (z + radius) / (radius * 2)));
+    
+    // Apply ease-in curve (power of 3) so planes stay small longer and scale up quickly at the end
+    const easedZ = Math.pow(normalizedZ, 3);
+    
+    const scale = minScale + (maxScale - minScale) * easedZ;
+    const opacity = minOpacity + (maxOpacity - minOpacity) * easedZ;
     
     groupRef.current.scale.setScalar(scale);
     
@@ -210,7 +214,7 @@ function CarouselRing({ isDark }: { isDark: boolean }) {
   const ringRef = useRef<THREE.Group>(null);
   
   // Leva controls for tweaking rotation
-  const { rotX, rotY, rotZ, posX, posY, posZ, radius, spinSpeed } = useControls("Ring", {
+  const { rotX, rotY, rotZ, posX, posY, posZ, radius, spinSpeed, cardSize } = useControls("Ring", {
     rotX: { value: -0.41, min: -1, max: 1, step: 0.01, label: "Rotation X (×π)" },
     rotY: { value: -0.09, min: -1, max: 1, step: 0.01, label: "Rotation Y (×π)" },
     rotZ: { value: 0.12, min: -1, max: 1, step: 0.01, label: "Rotation Z (×π)" },
@@ -219,6 +223,7 @@ function CarouselRing({ isDark }: { isDark: boolean }) {
     posZ: { value: 0.8, min: -5, max: 5, step: 0.1, label: "Position Z" },
     radius: { value: 3.4, min: 2, max: 8, step: 0.1, label: "Radius" },
     spinSpeed: { value: 0.08, min: 0, max: 0.5, step: 0.01, label: "Spin Speed" },
+    cardSize: { value: 1.0, min: 0.3, max: 2.0, step: 0.1, label: "Card Size" },
   });
   
   const numCards = 8;
@@ -252,6 +257,7 @@ function CarouselRing({ isDark }: { isDark: boolean }) {
             angle={card.angle}
             radius={radius}
             isDark={isDark}
+            cardSize={cardSize}
           />
         ))}
       </group>
@@ -279,7 +285,7 @@ function Scene({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: numb
       <directionalLight position={[0, -5, 5]} intensity={2} />
       <pointLight position={[0, 3, 3]} intensity={2} />
 
-      <group position={[0, 0.4, 0]}>
+      <group position={[0, 0.1, 0]}>
         <MorphingBlob isDark={isDark} mouse={mouse} />
         <CarouselRing isDark={isDark} />
       </group>
