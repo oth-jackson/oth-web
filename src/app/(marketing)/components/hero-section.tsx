@@ -54,7 +54,7 @@ export function HeroSection() {
       </motion.div>
 
       <div className="min-h-[80vh] flex items-center relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full md:-translate-y-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full md:-translate-y-12 lg:-translate-y-16">
           <div className="max-w-4xl">
             <motion.p
               className="text-base uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-8"
