@@ -6,7 +6,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Billboard, useGLTF } from "@react-three/drei";
 import { easing } from "maath";
 import { useTheme } from "next-themes";
-import { useControls } from "leva";
+import { useControls, Leva } from "leva";
 
 // Global mouse position hook - offset for 3D scene being on right side
 function useGlobalMouse() {
@@ -35,11 +35,14 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF("/models/logo.gltf");
   
-  const { logoScale, baseRotX, baseRotY, baseRotZ } = useControls("Logo", {
+  const { logoScale, baseRotX, baseRotY, baseRotZ, lightX, lightY, lightZ } = useControls("Logo", {
     logoScale: { value: 0.02, min: 0.001, max: 1, step: 0.001, label: "Logo Scale" },
     baseRotX: { value: 0, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot X" },
-    baseRotY: { value: 2.64, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot Y" },
+    baseRotY: { value: 2.24, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot Y" },
     baseRotZ: { value: 0, min: -Math.PI, max: Math.PI, step: 0.1, label: "Base Rot Z" },
+    lightX: { value: 1.0, min: -2, max: 2, step: 0.1, label: "Light X" },
+    lightY: { value: 2, min: -2, max: 2, step: 0.1, label: "Light Y" },
+    lightZ: { value: 1.0, min: -2, max: 2, step: 0.1, label: "Light Z" },
   });
   
   // Create dithering shader material
@@ -49,6 +52,7 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
     return new THREE.ShaderMaterial({
       uniforms: {
         uColor: { value: color },
+        uLightDir: { value: new THREE.Vector3(lightX, lightY, lightZ) },
       },
       vertexShader: `
         varying vec3 vNormal;
@@ -63,6 +67,7 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
       `,
       fragmentShader: `
         uniform vec3 uColor;
+        uniform vec3 uLightDir;
         varying vec3 vNormal;
         varying vec3 vWorldPosition;
         
@@ -85,9 +90,10 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
         }
         
         void main() {
-          // Lighting from multiple directions
-          vec3 lightDir1 = normalize(vec3(1.0, 1.0, 1.0));
-          vec3 lightDir2 = normalize(vec3(-1.0, 0.5, 0.5));
+          // Main light from controls
+          vec3 lightDir1 = normalize(uLightDir);
+          // Secondary fill light
+          vec3 lightDir2 = normalize(vec3(-uLightDir.x, uLightDir.y * 0.5, uLightDir.z * 0.5));
           
           float diff1 = max(dot(vNormal, lightDir1), 0.0);
           float diff2 = max(dot(vNormal, lightDir2), 0.0) * 0.5;
@@ -100,16 +106,16 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
           vec2 screenPos = gl_FragCoord.xy / 2.0;
           float dithered = dither8x8(screenPos, brightness);
           
-          // Mix between dark and bright versions of the color
-          vec3 darkColor = uColor * 0.4;
-          vec3 lightColor = uColor * 1.4;
+          // Mix between green and white based on dither
+          vec3 darkColor = uColor;
+          vec3 lightColor = vec3(1.0, 1.0, 1.0);
           vec3 finalColor = mix(darkColor, lightColor, dithered);
           
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
     });
-  }, [isDark]);
+  }, [isDark, lightX, lightY, lightZ]);
   
   // Clone the scene so we can modify materials
   const clonedScene = useMemo(() => {
@@ -366,6 +372,7 @@ export function HeroScene() {
 
   return (
     <div className="absolute inset-0 w-full h-full">
+      <Leva hidden />
       <Canvas
         camera={{ position: [0, 0, 9], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
