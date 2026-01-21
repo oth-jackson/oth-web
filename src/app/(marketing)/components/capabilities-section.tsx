@@ -19,6 +19,7 @@ const capabilities = [
   "Tech Debt Cleanup",
   "Investor-Ready Demos",
   "Product Roadmapping",
+  "3D",
   "UX/UI Design",
   "Full-Stack Engineering",
 ];

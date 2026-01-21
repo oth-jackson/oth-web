@@ -18,17 +18,42 @@ export function HeroSection() {
       id="hero"
       className="min-h-[80vh] relative bg-background overflow-hidden"
     >
-      {/* 3D Scene Panel */}
+      {/* Subtle halftone/dot pattern overlay for left side */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.08] dark:opacity-[0.12]"
+        style={{
+          backgroundImage: `radial-gradient(circle, currentColor 1px, transparent 1px)`,
+          backgroundSize: '16px 16px',
+          maskImage: 'linear-gradient(to right, black 0%, black 50%, transparent 70%)',
+          WebkitMaskImage: 'linear-gradient(to right, black 0%, black 50%, transparent 70%)'
+        }}
+      />
+
+      {/* Subtle gradient texture */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-50"
+        style={{
+          background: 'linear-gradient(135deg, transparent 0%, transparent 40%, hsl(var(--muted)) 100%)',
+          maskImage: 'linear-gradient(to right, black 0%, transparent 60%)',
+          WebkitMaskImage: 'linear-gradient(to right, black 0%, transparent 60%)'
+        }}
+      />
+
+      {/* 3D Scene - Extended panel that bleeds into left side */}
       <motion.div
-        className="hidden lg:block absolute right-0 top-0 h-full w-[40vw]"
+        className="hidden lg:block absolute right-0 top-0 h-full w-[45vw]"
         initial={{ x: "100%", opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.3, ease: easing.smoothOut }}
+        style={{
+          maskImage: "linear-gradient(to right, transparent 0%, black 20%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 20%)"
+        }}
       >
         <HeroScene />
       </motion.div>
 
-      <div className="min-h-[80vh] flex items-center relative">
+      <div className="min-h-[80vh] flex items-center relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full md:-translate-y-6">
           <div className="max-w-4xl">
             <motion.p
