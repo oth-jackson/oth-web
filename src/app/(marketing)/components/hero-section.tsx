@@ -42,9 +42,9 @@ export function HeroSection() {
       {/* 3D Scene - Extended panel that bleeds into left side */}
       <motion.div
         className="hidden lg:block absolute right-0 top-0 h-full w-[45vw]"
-        initial={{ x: "100%", opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.3, ease: easing.smoothOut }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, delay: 0.5, ease: easing.smoothOut }}
         style={{
           maskImage: "linear-gradient(to right, transparent 0%, black 20%)",
           WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 20%)"
