@@ -27,11 +27,11 @@ export function Navigation() {
       <div className="flex h-12 justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/otherwise-logo.svg"
+            src="/logos/otherwise/oth-logo.svg"
             alt="Otherwise Logo"
             width={28}
             height={28}
-            className="w-7 h-7 dark:invert"
+            className="w-7 h-7 invert dark:invert-0"
           />
           <span className="font-medium">Otherwise</span>
         </Link>

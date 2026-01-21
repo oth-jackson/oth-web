@@ -58,6 +58,27 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Otherwise",
+  description: "AI-native strategy, design, and engineering.",
+  url: "https://otherwise.dev",
+  logo: "https://otherwise.dev/otherwise-logo.svg",
+  image: "https://otherwise.dev/images/meta/thumbnail-preview.png",
+  email: "contact@otherwise.dev",
+  sameAs: [
+    "https://www.linkedin.com/company/otherwise-company",
+  ],
+  knowsAbout: [
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Software Engineering",
+    "Product Design",
+    "Strategy Consulting",
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -68,6 +89,10 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body
         className={cn(

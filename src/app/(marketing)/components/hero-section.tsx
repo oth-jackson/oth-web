@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Linkedin } from "lucide-react";
 import { Button } from "@/ui/button";
 import Link from "next/link";
 import { CalendarModal } from "@/components/calendar-modal";
@@ -78,6 +78,16 @@ export function HeroSection() {
               <Link href="/posts?type=project">
                 <Button variant="outline" size="lg">
                   View Projects
+                </Button>
+              </Link>
+              <Link
+                href="https://www.linkedin.com/company/otherwise-company"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="ghost" size="lg">
+                  <Linkedin className="h-5 w-5" />
+                  LinkedIn
                 </Button>
               </Link>
             </motion.div>
