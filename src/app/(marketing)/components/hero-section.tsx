@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useRef } from "react";
-import { ArrowUpRight, Linkedin, Twitter, Mail } from "lucide-react";
+import { ArrowUpRight, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/ui/button";
 import Link from "next/link";
 import { CalendarModal } from "@/components/calendar-modal";
@@ -141,13 +141,13 @@ export function HeroSection() {
             >
               <CalendarModal>
                 <Button size="lg">
-                  Book a Discovery Call
+                  Book Discovery Call
                   <ArrowUpRight className="h-5 w-5" />
                 </Button>
               </CalendarModal>
               <Link href="/posts?type=project">
-                <Button variant="outline" size="lg">
-                  View Projects
+                <Button variant="ghost" size="lg" className="bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 border border-neutral-200 dark:border-neutral-700">
+                  Our Work
                 </Button>
               </Link>
             </motion.div>
@@ -165,15 +165,6 @@ export function HeroSection() {
               >
                 <Button variant="ghost" size="icon" className="h-9 w-9">
                   <Linkedin className="!h-5 !w-5" />
-                </Button>
-              </Link>
-              <Link
-                href="https://twitter.com/otherwiseco"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button variant="ghost" size="icon" className="h-9 w-9">
-                  <Twitter className="!h-5 !w-5" />
                 </Button>
               </Link>
               <Link href="mailto:contact@otherwise.dev">
