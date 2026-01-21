@@ -45,15 +45,27 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
   // Clone the scene so we can modify materials
   const clonedScene = useMemo(() => {
     const clone = scene.clone();
-    // Primary green color matching the button color
-    // Light: oklch(0.4246 0.0305 174.09) ≈ #4a6e6b
-    // Dark: oklch(0.5 0.04 174.09) ≈ #5a8582
-    const color = isDark ? "#5a8582" : "#4a6e6b";
+    // Deep, dark green color
+    const color = isDark ? "#1a6b5f" : "#145a50";
     
     clone.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
-        mesh.material = new THREE.MeshBasicMaterial({ color });
+        // Liquid glass material with deep green
+        mesh.material = new THREE.MeshPhysicalMaterial({
+          color: color,
+          emissive: color,
+          emissiveIntensity: 0.6,
+          metalness: 0.15,
+          roughness: 0.02,
+          transmission: 0.8,
+          thickness: 2.5,
+          ior: 1.6,
+          transparent: true,
+          opacity: 0.95,
+          clearcoat: 1,
+          clearcoatRoughness: 0.05,
+        });
       }
     });
     
