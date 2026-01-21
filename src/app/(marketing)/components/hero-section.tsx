@@ -1,10 +1,16 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { ArrowUpRight, Linkedin } from "lucide-react";
 import { Button } from "@/ui/button";
 import Link from "next/link";
 import { CalendarModal } from "@/components/calendar-modal";
 import { motion, easing } from "@/lib/motion";
+
+const HeroScene = dynamic(
+  () => import("@/components/hero-scene").then((mod) => mod.HeroScene),
+  { ssr: false }
+);
 
 export function HeroSection() {
   return (
@@ -12,23 +18,14 @@ export function HeroSection() {
       id="hero"
       className="min-h-[80vh] relative bg-background overflow-hidden"
     >
-      {/* Animated background panel */}
+      {/* 3D Scene Panel */}
       <motion.div
-        className="hidden lg:block absolute right-0 top-0 h-full w-[40vw] bg-muted"
+        className="hidden lg:block absolute right-0 top-0 h-full w-[40vw]"
         initial={{ x: "100%", opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.3, ease: easing.smoothOut }}
       >
-        <motion.div
-          className="h-full flex items-center justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.9 }}
-        >
-          <div className="text-center text-muted-foreground text-sm font-medium">
-            Selected Work
-          </div>
-        </motion.div>
+        <HeroScene />
       </motion.div>
 
       <div className="min-h-[80vh] flex items-center relative">
