@@ -111,7 +111,7 @@ function LogoShape({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: 
           
           float diff1 = max(dot(vNormal, lightDir1), 0.0);
           float diff2 = max(dot(vNormal, lightDir2), 0.0) * 0.5;
-          float ambient = 0.4;
+          float ambient = 0.3;
           
           float brightness = ambient + diff1 * 0.5 + diff2 * 0.3;
           brightness = clamp(brightness, 0.0, 1.0);
@@ -390,12 +390,12 @@ function Rig() {
 }
 
 function Scene({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: number } }) {
-  const bgColor = isDark ? "#0a0a0a" : "#fafafa";
+  const fogColor = isDark ? "#0a0a0a" : "#fafafa";
 
   return (
     <>
-      <color attach="background" args={[bgColor]} />
-      <fog attach="fog" args={[bgColor, 6, 18]} />
+      {/* Background is transparent - gradient shows from HTML layer */}
+      <fog attach="fog" args={[fogColor, 8, 20]} />
 
       {/* Very bright lighting */}
       <ambientLight intensity={2} />
@@ -405,7 +405,7 @@ function Scene({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: numb
       <pointLight position={[0, 3, 3]} intensity={2} />
 
       <group position={[0, 0.30, 0]}>
-        <MorphingBlob isDark={isDark} mouse={mouse} />
+      <MorphingBlob isDark={isDark} mouse={mouse} />
         <CarouselRing isDark={isDark} />
       </group>
       <Rig />
@@ -421,15 +421,15 @@ export function HeroScene() {
   return (
     <>
       <Leva hidden />
-      <div className="absolute inset-0 w-full h-full">
-        <Canvas
+    <div className="absolute inset-0 w-full h-full">
+      <Canvas
           camera={{ position: [0, 0, 9], fov: 45 }}
-          gl={{ antialias: true, alpha: true }}
-          dpr={[1, 1.5]}
-        >
-          <Scene isDark={isDark} mouse={mouse} />
-        </Canvas>
-      </div>
+        gl={{ antialias: true, alpha: true }}
+        dpr={[1, 1.5]}
+      >
+        <Scene isDark={isDark} mouse={mouse} />
+      </Canvas>
+    </div>
     </>
   );
 }

@@ -40,6 +40,16 @@ export function HeroSection() {
       id="hero"
       className="min-h-screen relative bg-background overflow-hidden"
     >
+      {/* Film grain/noise texture overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-[1] opacity-[0.25] dark:opacity-[0.35] mix-blend-soft-light"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: '200px 200px',
+        }}
+      />
+
       {/* Floating decorative shapes */}
       <motion.div
         className="absolute w-[600px] h-[600px] rounded-full pointer-events-none opacity-[0.03] dark:opacity-[0.06]"
@@ -62,7 +72,7 @@ export function HeroSection() {
       
       {/* Subtle halftone/dot pattern overlay for left side */}
       <motion.div
-        className="absolute inset-0 pointer-events-none opacity-[0.08] dark:opacity-[0.12]"
+        className="absolute inset-0 pointer-events-none opacity-[0.15] dark:opacity-[0.20]"
         style={{
           backgroundImage: `radial-gradient(circle, currentColor 1px, transparent 1px)`,
           backgroundSize: '16px 16px',
@@ -80,6 +90,27 @@ export function HeroSection() {
           maskImage: 'linear-gradient(to right, black 0%, transparent 60%)',
           WebkitMaskImage: 'linear-gradient(to right, black 0%, transparent 60%)',
           y: gradientY,
+        }}
+      />
+
+      {/* 3D Scene background gradient - separate layer */}
+      <div 
+        className="hidden lg:block absolute right-0 top-0 h-full w-[50vw]"
+        style={{
+          background: 'radial-gradient(ellipse at 50% 50%, hsl(0 0% 85% / 0.25) 0%, hsl(0 0% 90% / 0.12) 40%, transparent 70%)',
+          maskImage: "linear-gradient(to right, transparent 0%, black 15%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 15%)",
+        }}
+      />
+      {/* Dither pattern on gradient */}
+      <div 
+        className="hidden lg:block absolute right-0 top-0 h-full w-[50vw] opacity-[0.35] dark:opacity-[0.25]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='8' height='8' viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000' opacity='0.5'/%3E%3Crect x='4' y='0' width='1' height='1' fill='%23000' opacity='0.25'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000' opacity='0.375'/%3E%3Crect x='6' y='2' width='1' height='1' fill='%23000' opacity='0.125'/%3E%3Crect x='0' y='4' width='1' height='1' fill='%23000' opacity='0.3125'/%3E%3Crect x='4' y='4' width='1' height='1' fill='%23000' opacity='0.0625'/%3E%3Crect x='2' y='6' width='1' height='1' fill='%23000' opacity='0.4375'/%3E%3Crect x='6' y='6' width='1' height='1' fill='%23000' opacity='0.1875'/%3E%3C/svg%3E")`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: '4px 4px',
+          maskImage: "linear-gradient(to right, transparent 0%, black 15%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 15%)",
         }}
       />
 
