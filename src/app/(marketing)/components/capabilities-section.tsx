@@ -30,7 +30,7 @@ export function CapabilitiesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeInUp className="mb-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Focus Areas
+            <span className="inline-block -translate-y-0.5">🎯</span> Focus Areas
           </h2>
         </FadeInUp>
 

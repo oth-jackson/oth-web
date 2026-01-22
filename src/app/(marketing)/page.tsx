@@ -166,7 +166,7 @@ export default function Home() {
                 SELECTED PROJECTS
               </p>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-                Case Studies
+                📂 Case Studies
               </h2>
             </FadeInUp>
 

@@ -64,7 +64,7 @@ export function ContactSection() {
           <FadeInUp className="text-center lg:text-left">
             <p className="text-sm font-medium text-primary mb-2">GET IN TOUCH</p>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-              Let&apos;s Build Something Together
+              🤝 Let&apos;s Build Something Together
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
               Ready to transform your AI vision into reality? Schedule a discovery

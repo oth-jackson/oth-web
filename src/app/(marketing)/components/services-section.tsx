@@ -43,7 +43,7 @@ export function ServicesSection() {
         <FadeInUp className="mb-12 text-center">
           <p className="text-sm font-medium text-primary mb-2">ENGAGEMENTS</p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Choose Your Path
+            🚀 Choose Your Path
           </h2>
         </FadeInUp>
 

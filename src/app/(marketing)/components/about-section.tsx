@@ -11,7 +11,7 @@ export function AboutSection() {
           <FadeInUp>
             <p className="text-sm font-medium text-primary mb-2">ABOUT OTHERWISE</p>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-              Built for Innovation
+              ✨ Built for Innovation
             </h2>
 
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">

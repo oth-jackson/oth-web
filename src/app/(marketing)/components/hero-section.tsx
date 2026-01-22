@@ -38,7 +38,7 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="hero"
-      className="min-h-[90vh] relative bg-background overflow-hidden"
+      className="min-h-screen relative bg-background overflow-hidden"
     >
       {/* Floating decorative shapes */}
       <motion.div
@@ -98,9 +98,9 @@ export function HeroSection() {
         <HeroScene />
       </motion.div>
 
-      <div className="min-h-0 md:min-h-[90vh] flex items-start md:items-center relative z-10">
+      <div className="min-h-0 md:min-h-screen flex items-start md:items-center relative z-10">
         <motion.div 
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-6 md:py-20 w-full md:-translate-y-24 lg:-translate-y-32"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-6 md:py-20 w-full md:-translate-y-32 lg:-translate-y-40"
           style={{ y: contentY }}
         >
           <div>
@@ -130,7 +130,7 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 0.3, ease: easing.smooth }}
             >
               Expert design and engineering leads from people who&apos;ve helped
-              scale products to millions of users, hired teams, and shipped under pressure. We&apos;re ready to help you do the same.
+              scale products to $1M+ ARR, hired teams, and shipped under pressure. We&apos;re ready to help you do the same.
             </motion.p>
 
             <motion.div
