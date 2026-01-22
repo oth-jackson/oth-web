@@ -90,8 +90,8 @@ export function HeroSection() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, delay: 0.5, ease: easing.smoothOut }}
         style={{
-          maskImage: "linear-gradient(to right, transparent 0%, black 20%)",
-          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 20%)",
+          maskImage: "linear-gradient(to right, transparent 0%, black 10%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 10%)",
           y: sceneY,
         }}
       >
