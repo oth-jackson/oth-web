@@ -149,10 +149,10 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15, ease: easing.smoothOut }}
-              >
-                <span className="block">Ready to scale?</span>
-                <span className="block mt-2 md:mt-3">Let&apos;s build it.</span>
-              </motion.h1>
+            >
+              <span className="block">Ready to scale?</span>
+              <span className="block mt-2 md:mt-3">Let&apos;s build it.</span>
+            </motion.h1>
 
             <motion.p
               className="text-lg md:text-xl leading-relaxed text-muted-foreground max-w-2xl mb-8"
