@@ -239,7 +239,7 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: easing.smooth }}
             >
-              Expert design and engineering leads from people who&apos;ve helped
+              Expert design and engineering from people who&apos;ve helped
               scale AI products to $1M+ ARR, hired teams, and shipped under pressure. We&apos;re ready to help you do the same.
             </motion.p>
 
