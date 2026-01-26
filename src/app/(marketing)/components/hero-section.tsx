@@ -239,7 +239,7 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: easing.smooth }}
             >
-              Expert design and engineering skills from people who&apos;ve helped
+              Expert product design and engineering skills from people who&apos;ve helped
               scale AI products to $1M+ ARR, hired teams, and shipped under pressure. We&apos;re ready to help you do the same.
             </motion.p>
 
@@ -273,17 +273,75 @@ export function HeroSection() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button variant="ghost" size="icon" className="h-9 w-9">
-                  <Linkedin className="!h-5 !w-5" />
+                <Button variant="ghost" size="icon" className="h-9 w-9 scale-110">
+                  <Linkedin className="h-5 w-5" />
                 </Button>
               </Link>
               <Link href="mailto:contact@otherwise.dev">
-                <Button variant="ghost" size="icon" className="h-9 w-9">
-                  <Mail className="!h-5 !w-5" />
+                <Button variant="ghost" size="icon" className="h-9 w-9 scale-110">
+                  <Mail className="h-5 w-5" />
                 </Button>
               </Link>
             </motion.div>
+
           </div>
+        </motion.div>
+      </div>
+
+      {/* Mini Process Strip - Vertical (Absolute positioned) */}
+      <div className="hidden md:block absolute bottom-6 lg:bottom-8 left-0 right-0 z-10">
+        <motion.div
+          className="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 1.0, ease: easing.smooth }}
+        >
+        <motion.p
+          className="text-sm uppercase tracking-[0.15em] text-muted-foreground font-medium mb-6"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 0.4, ease: easing.smooth }}
+        >
+          How we work
+        </motion.p>
+        <div className="flex flex-col">
+          {[
+            { label: "Understand your goals", desc: "Deep-dive into context" },
+            { label: "Ship fast, iterate faster", desc: "Weeks, not months" },
+            { label: "Scale what works", desc: "Production-ready systems" },
+          ].map((step, index) => (
+            <motion.div
+              key={step.label}
+              className="flex gap-5"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.8 }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.15,
+                ease: easing.smoothOut,
+              }}
+            >
+              {/* Timeline */}
+              <div className="flex flex-col items-center">
+                <div className="w-3 h-3 min-w-3 min-h-3 rounded-full bg-primary mt-1 shrink-0" />
+                {index < 2 && (
+                  <div className="w-0.5 h-full bg-linear-to-b from-primary/40 to-transparent min-h-12" />
+                )}
+              </div>
+              {/* Content */}
+              <div className="pb-8">
+                <h4 className="text-lg font-semibold text-foreground leading-tight">
+                  {step.label}
+                </h4>
+                <p className="text-base text-muted-foreground mt-1">
+                  {step.desc}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
         </motion.div>
       </div>
     </section>
