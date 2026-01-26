@@ -246,23 +246,23 @@ function createRoundedRectShape(width: number, height: number, radius: number) {
 }
 
 // Individual carousel card - always faces the screen via Billboard
-function CarouselCard({ 
+function CarouselCard({
   angle,
   radius,
   isDark,
   cardSize,
-  children
-}: { 
+  texture,
+}: {
   angle: number;
   radius: number;
   isDark: boolean;
   cardSize: number;
-  children?: React.ReactNode;
+  texture?: THREE.Texture;
 }) {
   const groupRef = useRef<THREE.Group>(null);
   const materialRef = useRef<THREE.MeshBasicMaterial>(null);
-  const bgColor = isDark ? "#1a1a1a" : "#ffffff";
   const worldPos = useRef(new THREE.Vector3());
+  const bgColor = isDark ? "#1a1a1a" : "#ffffff";
 
   // Position on the ring (in local ring space, Y is up)
   const x = Math.sin(angle) * radius;
@@ -274,34 +274,62 @@ function CarouselCard({
     const height = 1.2 * cardSize;
     const cornerRadius = 0.12 * cardSize;
     const shape = createRoundedRectShape(width, height, cornerRadius);
-    return new THREE.ShapeGeometry(shape);
+    const geometry = new THREE.ShapeGeometry(shape);
+
+    // Fix UV mapping to fill the entire shape
+    const uvAttribute = geometry.attributes.uv;
+    const positions = geometry.attributes.position;
+
+    // Calculate bounds
+    let minX = Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity;
+
+    for (let i = 0; i < positions.count; i++) {
+      const x = positions.getX(i);
+      const y = positions.getY(i);
+      minX = Math.min(minX, x);
+      maxX = Math.max(maxX, x);
+      minY = Math.min(minY, y);
+      maxY = Math.max(maxY, y);
+    }
+
+    // Remap UVs to 0-1 range based on position bounds
+    for (let i = 0; i < uvAttribute.count; i++) {
+      const x = positions.getX(i);
+      const y = positions.getY(i);
+      uvAttribute.setX(i, (x - minX) / (maxX - minX));
+      uvAttribute.setY(i, (y - minY) / (maxY - minY));
+    }
+
+    uvAttribute.needsUpdate = true;
+    return geometry;
   }, [cardSize]);
 
   // Scale and fade based on depth - smaller/faded when behind, larger/opaque when in front
   useFrame(() => {
     if (!groupRef.current) return;
-    
+
     // Get world position
     groupRef.current.getWorldPosition(worldPos.current);
-    
+
     // Map Z position to scale: further back (negative Z) = smaller, closer (positive Z) = larger
     const z = worldPos.current.z;
     const minScale = 0.4;
     const maxScale = 1.0;
     const minOpacity = 0.35;
     const maxOpacity = 0.95;
-    
+
     // Normalize z from [-radius, +radius] to [0, 1]
     const normalizedZ = Math.max(0, Math.min(1, (z + radius) / (radius * 2)));
-    
+
     // Apply ease-in curve (power of 3) so planes stay small longer and scale up quickly at the end
     const easedZ = Math.pow(normalizedZ, 3);
-    
+
     const scale = minScale + (maxScale - minScale) * easedZ;
     const opacity = minOpacity + (maxOpacity - minOpacity) * easedZ;
-    
+
     groupRef.current.scale.setScalar(scale);
-    
+
     if (materialRef.current) {
       materialRef.current.opacity = opacity;
     }
@@ -313,25 +341,72 @@ function CarouselCard({
       <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
         {/* Rounded card plane */}
         <mesh geometry={roundedRectGeometry}>
-          <meshBasicMaterial 
+          <meshBasicMaterial
             ref={materialRef}
-            color={bgColor} 
+            map={texture}
+            color={texture ? "#ffffff" : bgColor}
             side={THREE.DoubleSide}
             transparent
             opacity={0.95}
           />
         </mesh>
-        {children}
       </Billboard>
     </group>
   );
 }
 
+// Card images - add your project images here
+const CARD_IMAGES = [
+  "/images/carousel/project-1.png",
+  "/images/carousel/project-2.png",
+  "/images/carousel/project-3.png",
+  "/images/carousel/project-4.png",
+  "/images/carousel/project-5.png",
+  "/images/carousel/project-6.png",
+  "/images/carousel/project-7.png",
+  "/images/carousel/project-8.png",
+];
+
 // 3D Ring carousel of cards around the blob - tilted to pass bottom-right
 function CarouselRing({ isDark }: { isDark: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const ringRef = useRef<THREE.Group>(null);
-  
+  const [textures, setTextures] = useState<(THREE.Texture | null)[]>([]);
+
+  // Load textures manually to handle errors gracefully
+  useEffect(() => {
+    const loader = new THREE.TextureLoader();
+    const loadedTextures: (THREE.Texture | null)[] = [];
+
+    Promise.all(
+      CARD_IMAGES.map((path, index) =>
+        new Promise<void>((resolve) => {
+          loader.load(
+            path,
+            (texture) => {
+              // Improve texture quality
+              texture.minFilter = THREE.LinearMipmapLinearFilter;
+              texture.magFilter = THREE.LinearFilter;
+              texture.anisotropy = 16;
+              texture.generateMipmaps = true;
+              texture.colorSpace = THREE.SRGBColorSpace;
+              loadedTextures[index] = texture;
+              resolve();
+            },
+            undefined,
+            () => {
+              // On error, set null for this texture
+              loadedTextures[index] = null;
+              resolve();
+            }
+          );
+        })
+      )
+    ).then(() => {
+      setTextures(loadedTextures);
+    });
+  }, []);
+
   // Leva controls for tweaking rotation
   const { rotX, rotY, rotZ, posX, posY, posZ, radius, spinSpeed, cardSize } = useControls("Ring", {
     rotX: { value: -0.41, min: -1, max: 1, step: 0.01, label: "Rotation X (×π)" },
@@ -344,8 +419,8 @@ function CarouselRing({ isDark }: { isDark: boolean }) {
     spinSpeed: { value: 0.08, min: 0, max: 0.5, step: 0.01, label: "Spin Speed" },
     cardSize: { value: 1.0, min: 0.3, max: 2.0, step: 0.1, label: "Card Size" },
   });
-  
-  const numCards = 8;
+
+  const numCards = CARD_IMAGES.length;
 
   // Slow rotation animation around the ring's local axis
   useFrame((_, delta) => {
@@ -363,8 +438,8 @@ function CarouselRing({ isDark }: { isDark: boolean }) {
 
   return (
     // Outer group tilts the ring: rotated so it goes top-left to bottom-right
-    <group 
-      ref={groupRef} 
+    <group
+      ref={groupRef}
       rotation={[Math.PI * rotX, Math.PI * rotY, Math.PI * rotZ]}
       position={[posX, posY, posZ]}
     >
@@ -377,6 +452,7 @@ function CarouselRing({ isDark }: { isDark: boolean }) {
             radius={radius}
             isDark={isDark}
             cardSize={cardSize}
+            texture={textures[card.index] || undefined}
           />
         ))}
       </group>
@@ -425,7 +501,7 @@ export function HeroScene() {
       <Canvas
           camera={{ position: [0, 0, 9], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
-        dpr={[1, 1.5]}
+        dpr={[1, 2]}
       >
         <Scene isDark={isDark} mouse={mouse} />
       </Canvas>

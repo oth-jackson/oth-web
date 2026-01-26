@@ -100,6 +100,7 @@ export default function RootLayout({
           geistMono.variable,
           "antialiased flex flex-col min-h-screen font-sans"
         )}
+        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"
