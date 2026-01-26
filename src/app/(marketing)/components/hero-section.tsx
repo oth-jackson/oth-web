@@ -24,7 +24,7 @@ export function HeroSection() {
   const measurerRef = useRef<HTMLSpanElement | null>(null);
   const wordBoxRef = useRef<HTMLSpanElement | null>(null);
 
-  const visionWords = useMemo(() => ["Vision.", "Idea.", "Team."], []);
+  const visionWords = useMemo(() => ["Vision.", "Goals.", "Product."], []);
 
   // Pre-calculate initial width on mount
   useEffect(() => {
@@ -165,13 +165,13 @@ export function HeroSection() {
 
       {/* 3D Scene - Extended panel that bleeds into left side */}
       <motion.div
-        className="hidden lg:block absolute right-0 top-0 h-full w-[50vw] scale-110 origin-right"
+        className="hidden lg:block absolute right-0 top-0 h-full w-[55vw] scale-110 origin-right"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, delay: 0.5, ease: easing.smoothOut }}
         style={{
-          maskImage: "linear-gradient(to right, transparent 0%, black 10%)",
-          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 10%)",
+          maskImage: "linear-gradient(to right, transparent 0%, black 8%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%)",
           y: sceneY,
         }}
       >
