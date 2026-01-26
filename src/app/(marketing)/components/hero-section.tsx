@@ -2,12 +2,108 @@
 
 import dynamic from "next/dynamic";
 import { useRef, useState, useEffect, useMemo } from "react";
-import { ArrowUpRight, Linkedin, Mail } from "lucide-react";
+import { ArrowUpRight, Linkedin, Mail, Target, Rocket, TrendingUp, LucideIcon } from "lucide-react";
 import { Button } from "@/ui/button";
 import Link from "next/link";
 import { CalendarModal } from "@/components/calendar-modal";
 import { motion, easing } from "@/lib/motion";
-import { useScroll, useTransform, useSpring } from "framer-motion";
+import { useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
+
+// Process step component with scroll-based highlighting
+function ProcessStep({ 
+  label, 
+  desc, 
+  index, 
+  scrollProgress,
+  isLast,
+  fadeEnd = false,
+  icon: Icon
+}: { 
+  label: string; 
+  desc: string; 
+  index: number; 
+  scrollProgress: MotionValue<number>;
+  isLast: boolean;
+  fadeEnd?: boolean;
+  icon: LucideIcon;
+}) {
+  // Each step highlights at different scroll thresholds (compressed for quicker animation)
+  // Step 0: 0.0-0.08, Step 1: 0.1-0.18, Step 2: 0.2-0.28
+  const startThreshold = index * 0.1;
+  const peakThreshold = startThreshold + 0.08;
+  
+  // Opacity: muted (0.35) -> highlighted (1), first item always highlighted
+  const opacity = useTransform(
+    scrollProgress,
+    [startThreshold, peakThreshold],
+    index === 0 ? [1, 1] : [0.35, 1]
+  );
+  
+  // Dot grows and becomes more visible as the step activates, first item always highlighted
+  const dotScale = useTransform(
+    scrollProgress,
+    [startThreshold, peakThreshold],
+    index === 0 ? [1.2, 1.2] : [0.7, 1.2]
+  );
+  
+  const dotOpacity = useTransform(
+    scrollProgress,
+    [startThreshold, peakThreshold],
+    index === 0 ? [1, 1] : [0.4, 1]
+  );
+  
+  // Line grows from top to bottom to connect to the next step
+  const lineScale = useTransform(
+    scrollProgress,
+    [peakThreshold, peakThreshold + 0.08],
+    [0, 1]
+  );
+
+  return (
+    <motion.div
+      className="flex gap-5"
+      style={{ opacity }}
+      initial={{ opacity: index === 0 ? 1 : 0.35 }}
+    >
+      {/* Timeline */}
+      <div className="flex flex-col items-center">
+        <motion.div 
+          className="w-3 h-3 min-w-3 min-h-3 rounded-full mt-1 shrink-0 bg-primary"
+          style={{ 
+            scale: dotScale, 
+            opacity: dotOpacity,
+            background: "radial-gradient(circle at 30% 30%, #238578, #1a6b60 40%, #114a42 100%)",
+            boxShadow: "inset -1px -1px 2px rgba(0,0,0,0.2), 0 1px 3px rgba(42,160,144,0.4)"
+          }}
+          initial={{ scale: index === 0 ? 1.2 : 0.7, opacity: index === 0 ? 1 : 0.4 }}
+        />
+        {!isLast && (
+          <div className="h-full min-h-12 w-0.5 relative">
+            <motion.div 
+              className={`absolute top-0 left-0 w-full h-full origin-top ${
+                fadeEnd 
+                  ? "bg-gradient-to-b from-primary/30 to-transparent" 
+                  : "bg-primary/30"
+              }`}
+              style={{ scaleY: lineScale }}
+              initial={{ scaleY: 0 }}
+            />
+          </div>
+        )}
+      </div>
+      {/* Content */}
+      <div className="pb-8">
+        <h4 className="text-xl font-semibold text-foreground leading-tight flex items-center gap-2">
+          <Icon className="w-5 h-5 text-primary" />
+          {label}
+        </h4>
+        <p className="text-base text-muted-foreground mt-1">
+          {desc}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
 
 const HeroScene = dynamic(
   () => import("@/components/hero-scene").then((mod) => mod.HeroScene),
@@ -234,13 +330,13 @@ export function HeroSection() {
             </motion.h1>
 
             <motion.p
-              className="text-lg md:text-xl leading-relaxed text-muted-foreground max-w-2xl mb-8"
+              className="text-lg md:text-xl leading-relaxed text-muted-foreground max-w-xl mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: easing.smooth }}
             >
               Expert product design and engineering skills from people who&apos;ve helped
-              scale AI products to $1M+ ARR, hired teams, and shipped under pressure. We&apos;re ready to help you do the same.
+              scale AI products to $1M+ ARR, hired teams, and shipped under pressure.
             </motion.p>
 
             <motion.div
@@ -306,41 +402,31 @@ export function HeroSection() {
           How we work
         </motion.p>
         <div className="flex flex-col">
-          {[
-            { label: "Understand your goals", desc: "Deep-dive into context" },
-            { label: "Ship fast, iterate faster", desc: "Weeks, not months" },
-            { label: "Scale what works", desc: "Production-ready systems" },
-          ].map((step, index) => (
-            <motion.div
-              key={step.label}
-              className="flex gap-5"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.8 }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.15,
-                ease: easing.smoothOut,
-              }}
-            >
-              {/* Timeline */}
-              <div className="flex flex-col items-center">
-                <div className="w-3 h-3 min-w-3 min-h-3 rounded-full bg-primary mt-1 shrink-0" />
-                {index < 2 && (
-                  <div className="w-0.5 h-full bg-linear-to-b from-primary/40 to-transparent min-h-12" />
-                )}
-              </div>
-              {/* Content */}
-              <div className="pb-8">
-                <h4 className="text-lg font-semibold text-foreground leading-tight">
-                  {step.label}
-                </h4>
-                <p className="text-base text-muted-foreground mt-1">
-                  {step.desc}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+          <ProcessStep 
+            label="Understand Your Goals" 
+            desc="Deep-dive into context" 
+            index={0} 
+            scrollProgress={scrollYProgress} 
+            isLast={false}
+            icon={Target}
+          />
+          <ProcessStep 
+            label="Ship Fast, Iterate Faster" 
+            desc="Weeks, not months" 
+            index={1} 
+            scrollProgress={scrollYProgress} 
+            isLast={false}
+            icon={Rocket}
+          />
+          <ProcessStep 
+            label="Scale What Works" 
+            desc="Production-ready systems" 
+            index={2} 
+            scrollProgress={scrollYProgress} 
+            isLast={false}
+            fadeEnd={true}
+            icon={TrendingUp}
+          />
         </div>
         </motion.div>
       </div>

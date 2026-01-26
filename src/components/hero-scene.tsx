@@ -316,7 +316,7 @@ function CarouselCard({
     const z = worldPos.current.z;
     const minScale = 0.4;
     const maxScale = 1.0;
-    const minOpacity = 0.35;
+    const minOpacity = 0.15;
     const maxOpacity = 0.95;
 
     // Normalize z from [-radius, +radius] to [0, 1]
