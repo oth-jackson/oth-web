@@ -218,7 +218,7 @@ function MorphingBlob({ isDark, mouse }: { isDark: boolean; mouse: { x: number; 
 
   return (
     <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.4}>
-      <group scale={blobScale}>
+      <group scale={blobScale} position={[0, 0.3, 0]}>
         {/* Logo - tracks mouse */}
         <LogoShape isDark={isDark} mouse={mouse} />
       </group>
@@ -404,7 +404,7 @@ function Scene({ isDark, mouse }: { isDark: boolean; mouse: { x: number; y: numb
       <directionalLight position={[0, -5, 5]} intensity={2} />
       <pointLight position={[0, 3, 3]} intensity={2} />
 
-      <group position={[0, 0.30, 0]}>
+      <group position={[0, 0.6, 0]}>
       <MorphingBlob isDark={isDark} mouse={mouse} />
         <CarouselRing isDark={isDark} />
       </group>
@@ -421,7 +421,7 @@ export function HeroScene() {
   return (
     <>
       <Leva hidden />
-    <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full">
       <Canvas
           camera={{ position: [0, 0, 9], fov: 45 }}
         gl={{ antialias: true, alpha: true }}

@@ -165,7 +165,7 @@ export function HeroSection() {
 
       {/* 3D Scene - Extended panel that bleeds into left side */}
       <motion.div
-        className="hidden lg:block absolute right-0 top-0 h-full w-[50vw]"
+        className="hidden lg:block absolute right-0 top-0 h-full w-[50vw] scale-110 origin-right"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, delay: 0.5, ease: easing.smoothOut }}
