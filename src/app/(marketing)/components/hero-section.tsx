@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useRef } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import { ArrowUpRight, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/ui/button";
 import Link from "next/link";
@@ -16,7 +16,56 @@ const HeroScene = dynamic(
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  
+
+  // Cycling words state
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [isWordVisible, setIsWordVisible] = useState(true);
+  const [boxWidth, setBoxWidth] = useState<number | null>(null);
+  const measurerRef = useRef<HTMLSpanElement | null>(null);
+  const wordBoxRef = useRef<HTMLSpanElement | null>(null);
+
+  const visionWords = useMemo(() => ["Vision.", "Idea.", "Team."], []);
+
+  // Pre-calculate initial width on mount
+  useEffect(() => {
+    if (measurerRef.current) {
+      measurerRef.current.textContent = visionWords[0];
+      const baseWidth = measurerRef.current.offsetWidth;
+      const buffer = 10;
+      const initialWidth = Math.max(baseWidth + buffer, 80);
+      setBoxWidth(initialWidth);
+    }
+  }, [visionWords]);
+
+  // Cycling animation for words
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (measurerRef.current) {
+        const nextIndex = (currentWordIndex + 1) % visionWords.length;
+        measurerRef.current.textContent = visionWords[nextIndex];
+        const baseWidth = measurerRef.current.offsetWidth;
+        const buffer = 10;
+        const nextWidth = Math.max(baseWidth + buffer, 80);
+
+        // Fade out text
+        setIsWordVisible(false);
+
+        // Resize width after fade out
+        setTimeout(() => {
+          setBoxWidth(nextWidth);
+        }, 400);
+
+        // Change text and fade in
+        setTimeout(() => {
+          setCurrentWordIndex(nextIndex);
+          setIsWordVisible(true);
+        }, 600);
+      }
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [currentWordIndex, visionWords]);
+
   // Scroll-based parallax
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -150,8 +199,38 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15, ease: easing.smoothOut }}
             >
-              <span className="block">Ready to scale?</span>
-              <span className="block mt-2 md:mt-3">Let&apos;s build it.</span>
+              <span className="block">
+                Your{" "}
+                {/* Hidden measurer element */}
+                <span
+                  ref={measurerRef}
+                  className="absolute invisible pointer-events-none font-serif italic"
+                  style={{
+                    position: "absolute",
+                    visibility: "hidden",
+                    whiteSpace: "nowrap",
+                  }}
+                />
+                <span
+                  ref={wordBoxRef}
+                  className="inline-block font-serif italic"
+                  style={{
+                    width: boxWidth ? `${boxWidth}px` : "auto",
+                    transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                  }}
+                >
+                  <span
+                    className={`inline-block transition-all duration-500 ${
+                      isWordVisible
+                        ? "opacity-100 blur-0"
+                        : "opacity-0 blur-sm"
+                    }`}
+                  >
+                    {visionWords[currentWordIndex]}
+                  </span>
+                </span>
+              </span>
+              <span className="block mt-2 md:mt-3">Our Execution.</span>
             </motion.h1>
 
             <motion.p
@@ -161,7 +240,7 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 0.3, ease: easing.smooth }}
             >
               Expert design and engineering leads from people who&apos;ve helped
-              scale products to $1M+ ARR, hired teams, and shipped under pressure. We&apos;re ready to help you do the same.
+              scale AI products to $1M+ ARR, hired teams, and shipped under pressure. We&apos;re ready to help you do the same.
             </motion.p>
 
             <motion.div
