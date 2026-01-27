@@ -3,7 +3,7 @@
 import * as THREE from "three";
 import { useRef, useEffect, useState, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Billboard, useGLTF } from "@react-three/drei";
+import { Float, Billboard, useGLTF, Line } from "@react-three/drei";
 import { easing } from "maath";
 import { useTheme } from "next-themes";
 import { useControls, Leva } from "leva";
@@ -261,8 +261,8 @@ function CarouselCard({
 }) {
   const groupRef = useRef<THREE.Group>(null);
   const materialRef = useRef<THREE.MeshBasicMaterial>(null);
-  const outlineMaterialRef = useRef<THREE.LineBasicMaterial>(null);
   const worldPos = useRef(new THREE.Vector3());
+  const [outlineOpacity, setOutlineOpacity] = useState(0.3);
   const bgColor = isDark ? "#1a1a1a" : "#ffffff";
 
   // Position on the ring (in local ring space, Y is up)
@@ -270,7 +270,7 @@ function CarouselCard({
   const y = Math.cos(angle) * radius;
 
   // Create rounded rectangle geometry - size based on cardSize prop
-  const { roundedRectGeometry, outlineGeometry } = useMemo(() => {
+  const { roundedRectGeometry, outlinePoints } = useMemo(() => {
     const width = 1.8 * cardSize;
     const height = 1.2 * cardSize;
     const cornerRadius = 0.12 * cardSize;
@@ -304,11 +304,15 @@ function CarouselCard({
 
     uvAttribute.needsUpdate = true;
     
-    // Create outline geometry from shape points
-    const points = shape.getPoints(50);
-    const outlineGeo = new THREE.BufferGeometry().setFromPoints(points);
+    // Create outline points from shape
+    const shapePoints = shape.getPoints(50);
+    const outlinePoints = shapePoints.map(p => [p.x, p.y, 0] as [number, number, number]);
+    // Close the loop
+    if (outlinePoints.length > 0) {
+      outlinePoints.push(outlinePoints[0]);
+    }
     
-    return { roundedRectGeometry: geometry, outlineGeometry: outlineGeo };
+    return { roundedRectGeometry: geometry, outlinePoints };
   }, [cardSize]);
 
   // Scale and fade based on depth - smaller/faded when behind, larger/opaque when in front
@@ -339,9 +343,7 @@ function CarouselCard({
     if (materialRef.current) {
       materialRef.current.opacity = opacity;
     }
-    if (outlineMaterialRef.current) {
-      outlineMaterialRef.current.opacity = opacity;
-    }
+    setOutlineOpacity(opacity * 0.3);
   });
 
   // Frosted glass background color
@@ -372,15 +374,13 @@ function CarouselCard({
           />
         </mesh>
         {/* Outline border */}
-        <line geometry={outlineGeometry}>
-          <lineBasicMaterial
-            ref={outlineMaterialRef}
-            color="#000000"
-            transparent
-            opacity={0.3}
-            linewidth={1}
-          />
-        </line>
+        <Line
+          points={outlinePoints}
+          color="#000000"
+          transparent
+          opacity={outlineOpacity}
+          lineWidth={1}
+        />
       </Billboard>
     </group>
   );
