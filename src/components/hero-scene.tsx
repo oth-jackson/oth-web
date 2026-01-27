@@ -261,6 +261,7 @@ function CarouselCard({
 }) {
   const groupRef = useRef<THREE.Group>(null);
   const materialRef = useRef<THREE.MeshBasicMaterial>(null);
+  const outlineMaterialRef = useRef<THREE.LineBasicMaterial>(null);
   const worldPos = useRef(new THREE.Vector3());
   const bgColor = isDark ? "#1a1a1a" : "#ffffff";
 
@@ -269,7 +270,7 @@ function CarouselCard({
   const y = Math.cos(angle) * radius;
 
   // Create rounded rectangle geometry - size based on cardSize prop
-  const roundedRectGeometry = useMemo(() => {
+  const { roundedRectGeometry, outlineGeometry } = useMemo(() => {
     const width = 1.8 * cardSize;
     const height = 1.2 * cardSize;
     const cornerRadius = 0.12 * cardSize;
@@ -302,7 +303,12 @@ function CarouselCard({
     }
 
     uvAttribute.needsUpdate = true;
-    return geometry;
+    
+    // Create outline geometry from shape points
+    const points = shape.getPoints(50);
+    const outlineGeo = new THREE.BufferGeometry().setFromPoints(points);
+    
+    return { roundedRectGeometry: geometry, outlineGeometry: outlineGeo };
   }, [cardSize]);
 
   // Scale and fade based on depth - smaller/faded when behind, larger/opaque when in front
@@ -333,13 +339,28 @@ function CarouselCard({
     if (materialRef.current) {
       materialRef.current.opacity = opacity;
     }
+    if (outlineMaterialRef.current) {
+      outlineMaterialRef.current.opacity = opacity;
+    }
   });
 
+  // Frosted glass background color
+  const frostedColor = isDark ? "#2a2a2a" : "#f5f5f5";
+  
   return (
     <group ref={groupRef} position={[x, y, 0]}>
       {/* Billboard ensures the card always faces the camera/screen */}
       <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
-        {/* Rounded card plane */}
+        {/* Frosted glass background layer */}
+        <mesh geometry={roundedRectGeometry} position={[0, 0, -0.01]}>
+          <meshBasicMaterial
+            color={frostedColor}
+            side={THREE.DoubleSide}
+            transparent
+            opacity={0.7}
+          />
+        </mesh>
+        {/* Main card with texture */}
         <mesh geometry={roundedRectGeometry}>
           <meshBasicMaterial
             ref={materialRef}
@@ -350,6 +371,16 @@ function CarouselCard({
             opacity={0.95}
           />
         </mesh>
+        {/* Outline border */}
+        <line geometry={outlineGeometry}>
+          <lineBasicMaterial
+            ref={outlineMaterialRef}
+            color="#000000"
+            transparent
+            opacity={0.3}
+            linewidth={1}
+          />
+        </line>
       </Billboard>
     </group>
   );
