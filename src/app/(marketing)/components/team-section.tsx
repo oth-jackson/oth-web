@@ -134,9 +134,9 @@ export function TeamSection() {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <FadeInUp className="mb-12 text-center">
-          <p className="text-sm font-medium text-primary mb-2">THE TEAM</p>
+          <p className="text-sm font-medium text-primary mb-2">ABOUT US</p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            🛠️ Hands-on Design and Engineering
+            🛠️ Hands-on Leadership
           </h2>
         </FadeInUp>
 
