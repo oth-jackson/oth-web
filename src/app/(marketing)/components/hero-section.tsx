@@ -286,7 +286,7 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: easing.smooth }}
             >
-              For Growing Teams
+              For Growing Products
             </motion.p>
 
             <motion.h1
