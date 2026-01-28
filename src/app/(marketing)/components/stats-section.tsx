@@ -19,8 +19,8 @@ interface Stat {
 
 const stats: Stat[] = [
   { value: 1000, prefix: "$", suffix: "K", label: "ARR Generated", step: 10 },
-  { value: 2000, prefix: "", suffix: "K", label: "Impressions Driven", step: 20 },
-  { value: 15, prefix: "", suffix: "+", label: "Products Shipped" },
+  { value: 4000, prefix: "", suffix: "K", label: "Impressions Driven", step: 20 },
+  { value: 8, prefix: "", suffix: "+", label: "Products Shipped" },
 ];
 
 interface ConfettiPiece {
@@ -37,50 +37,52 @@ interface ConfettiPiece {
 }
 
 const confettiPieces: ConfettiPiece[] = [
-  // Left cluster (originates from ~12% at bottom, spreads to 1-25%)
-  { id: 1, x: 2, delay: 0, duration: 1.8, size: "12px", color: "bg-primary/60", rotation: 15, shape: "square", finalY: 25, origin: "left" },
-  { id: 2, x: 7, delay: 0.2, duration: 2.0, size: "10px", color: "bg-amber-400/70", rotation: -30, shape: "circle", finalY: 45, origin: "left" },
-  { id: 3, x: 12, delay: 0.1, duration: 1.6, size: "10px", color: "bg-rose-400/60", rotation: 45, shape: "rectangle", finalY: 70, origin: "left" },
-  { id: 4, x: 4, delay: 0.4, duration: 2.2, size: "8px", color: "bg-sky-400/70", rotation: -15, shape: "square", finalY: 55, origin: "left" },
-  { id: 5, x: 17, delay: 0.3, duration: 1.9, size: "10px", color: "bg-emerald-400/60", rotation: 60, shape: "circle", finalY: 35, origin: "left" },
-  { id: 6, x: 9, delay: 0.5, duration: 2.1, size: "10px", color: "bg-violet-400/60", rotation: -45, shape: "square", finalY: 80, origin: "left" },
-  { id: 7, x: 21, delay: 0.15, duration: 1.7, size: "10px", color: "bg-amber-400/60", rotation: 30, shape: "rectangle", finalY: 15, origin: "left" },
-  { id: 8, x: 5, delay: 0.35, duration: 2.0, size: "8px", color: "bg-rose-400/70", rotation: -60, shape: "circle", finalY: 90, origin: "left" },
-  { id: 9, x: 24, delay: 0.25, duration: 1.8, size: "10px", color: "bg-primary/50", rotation: 20, shape: "square", finalY: 60, origin: "left" },
-  { id: 10, x: 14, delay: 0.45, duration: 1.9, size: "8px", color: "bg-sky-400/60", rotation: -25, shape: "circle", finalY: 40, origin: "left" },
-  { id: 21, x: 1, delay: 0.12, duration: 1.7, size: "8px", color: "bg-emerald-400/70", rotation: 35, shape: "circle", finalY: 18, origin: "left" },
-  { id: 22, x: 10, delay: 0.28, duration: 2.1, size: "12px", color: "bg-violet-400/65", rotation: -22, shape: "square", finalY: 52, origin: "left" },
-  { id: 23, x: 19, delay: 0.08, duration: 1.5, size: "9px", color: "bg-rose-400/65", rotation: 48, shape: "rectangle", finalY: 28, origin: "left" },
-  { id: 24, x: 6, delay: 0.55, duration: 2.3, size: "10px", color: "bg-amber-400/65", rotation: -38, shape: "circle", finalY: 72, origin: "left" },
-  { id: 25, x: 22, delay: 0.18, duration: 1.85, size: "8px", color: "bg-sky-400/70", rotation: 28, shape: "square", finalY: 48, origin: "left" },
-  { id: 26, x: 3, delay: 0.42, duration: 1.95, size: "11px", color: "bg-primary/55", rotation: -55, shape: "rectangle", finalY: 85, origin: "left" },
-  { id: 27, x: 25, delay: 0.32, duration: 2.0, size: "9px", color: "bg-emerald-400/60", rotation: 42, shape: "circle", finalY: 22, origin: "left" },
-  { id: 28, x: 8, delay: 0.22, duration: 1.75, size: "10px", color: "bg-violet-400/70", rotation: -18, shape: "square", finalY: 65, origin: "left" },
+  // Left cluster (originates from top-left card corner, spreads upward and outward)
+  { id: 1, x: 3, delay: 0, duration: 1.8, size: "12px", color: "bg-primary/60", rotation: 15, shape: "square", finalY: 8, origin: "left" },
+  { id: 2, x: 8, delay: 0.2, duration: 2.0, size: "10px", color: "bg-amber-400/70", rotation: -30, shape: "circle", finalY: 18, origin: "left" },
+  { id: 3, x: 15, delay: 0.1, duration: 1.6, size: "10px", color: "bg-rose-400/60", rotation: 45, shape: "rectangle", finalY: 35, origin: "left" },
+  { id: 4, x: 5, delay: 0.4, duration: 2.2, size: "8px", color: "bg-sky-400/70", rotation: -15, shape: "square", finalY: 25, origin: "left" },
+  { id: 5, x: 20, delay: 0.3, duration: 1.9, size: "10px", color: "bg-emerald-400/60", rotation: 60, shape: "circle", finalY: 12, origin: "left" },
+  { id: 6, x: 10, delay: 0.5, duration: 2.1, size: "10px", color: "bg-violet-400/60", rotation: -45, shape: "square", finalY: 42, origin: "left" },
+  { id: 7, x: 25, delay: 0.15, duration: 1.7, size: "10px", color: "bg-amber-400/60", rotation: 30, shape: "rectangle", finalY: 5, origin: "left" },
+  { id: 8, x: 6, delay: 0.35, duration: 2.0, size: "8px", color: "bg-rose-400/70", rotation: -60, shape: "circle", finalY: 48, origin: "left" },
+  { id: 9, x: 28, delay: 0.25, duration: 1.8, size: "10px", color: "bg-primary/50", rotation: 20, shape: "square", finalY: 30, origin: "left" },
+  { id: 10, x: 18, delay: 0.45, duration: 1.9, size: "8px", color: "bg-sky-400/60", rotation: -25, shape: "circle", finalY: 15, origin: "left" },
+  { id: 21, x: 2, delay: 0.12, duration: 1.7, size: "8px", color: "bg-emerald-400/70", rotation: 35, shape: "circle", finalY: 3, origin: "left" },
+  { id: 22, x: 12, delay: 0.28, duration: 2.1, size: "12px", color: "bg-violet-400/65", rotation: -22, shape: "square", finalY: 22, origin: "left" },
+  { id: 23, x: 22, delay: 0.08, duration: 1.5, size: "9px", color: "bg-rose-400/65", rotation: 48, shape: "rectangle", finalY: 10, origin: "left" },
+  { id: 24, x: 7, delay: 0.55, duration: 2.3, size: "10px", color: "bg-amber-400/65", rotation: -38, shape: "circle", finalY: 38, origin: "left" },
+  { id: 25, x: 26, delay: 0.18, duration: 1.85, size: "8px", color: "bg-sky-400/70", rotation: 28, shape: "square", finalY: 20, origin: "left" },
+  { id: 26, x: 4, delay: 0.42, duration: 1.95, size: "11px", color: "bg-primary/55", rotation: -55, shape: "rectangle", finalY: 45, origin: "left" },
+  { id: 27, x: 30, delay: 0.32, duration: 2.0, size: "9px", color: "bg-emerald-400/60", rotation: 42, shape: "circle", finalY: 6, origin: "left" },
+  { id: 28, x: 9, delay: 0.22, duration: 1.75, size: "10px", color: "bg-violet-400/70", rotation: -18, shape: "square", finalY: 32, origin: "left" },
 
-  // Right cluster (originates from ~88% at bottom, spreads to 75-99%)
-  { id: 11, x: 78, delay: 0.1, duration: 1.9, size: "10px", color: "bg-sky-400/60", rotation: -25, shape: "rectangle", finalY: 30, origin: "right" },
-  { id: 12, x: 85, delay: 0.3, duration: 2.1, size: "12px", color: "bg-emerald-400/70", rotation: 40, shape: "circle", finalY: 50, origin: "right" },
-  { id: 13, x: 92, delay: 0.2, duration: 1.7, size: "8px", color: "bg-violet-400/60", rotation: -50, shape: "square", finalY: 20, origin: "right" },
-  { id: 14, x: 80, delay: 0.25, duration: 2.0, size: "10px", color: "bg-rose-400/60", rotation: 35, shape: "circle", finalY: 65, origin: "right" },
-  { id: 15, x: 88, delay: 0.4, duration: 1.8, size: "10px", color: "bg-amber-400/70", rotation: -20, shape: "rectangle", finalY: 85, origin: "right" },
-  { id: 16, x: 95, delay: 0.15, duration: 1.9, size: "10px", color: "bg-primary/60", rotation: 55, shape: "square", finalY: 45, origin: "right" },
-  { id: 17, x: 82, delay: 0.3, duration: 2.2, size: "8px", color: "bg-sky-400/60", rotation: -40, shape: "circle", finalY: 75, origin: "right" },
-  { id: 18, x: 90, delay: 0.1, duration: 1.6, size: "12px", color: "bg-emerald-400/60", rotation: 25, shape: "square", finalY: 38, origin: "right" },
-  { id: 19, x: 76, delay: 0.45, duration: 2.0, size: "10px", color: "bg-violet-400/70", rotation: -35, shape: "rectangle", finalY: 55, origin: "right" },
-  { id: 20, x: 93, delay: 0.2, duration: 1.8, size: "10px", color: "bg-rose-400/60", rotation: 50, shape: "circle", finalY: 12, origin: "right" },
-  { id: 29, x: 97, delay: 0.08, duration: 1.7, size: "9px", color: "bg-amber-400/65", rotation: -32, shape: "circle", finalY: 58, origin: "right" },
-  { id: 30, x: 75, delay: 0.38, duration: 2.15, size: "11px", color: "bg-primary/55", rotation: 22, shape: "square", finalY: 42, origin: "right" },
-  { id: 31, x: 86, delay: 0.18, duration: 1.65, size: "8px", color: "bg-sky-400/70", rotation: -48, shape: "rectangle", finalY: 28, origin: "right" },
-  { id: 32, x: 96, delay: 0.52, duration: 2.25, size: "10px", color: "bg-rose-400/65", rotation: 38, shape: "circle", finalY: 78, origin: "right" },
-  { id: 33, x: 79, delay: 0.28, duration: 1.85, size: "9px", color: "bg-emerald-400/65", rotation: -15, shape: "square", finalY: 18, origin: "right" },
-  { id: 34, x: 91, delay: 0.42, duration: 1.95, size: "12px", color: "bg-violet-400/60", rotation: 52, shape: "rectangle", finalY: 68, origin: "right" },
-  { id: 35, x: 83, delay: 0.15, duration: 2.05, size: "8px", color: "bg-amber-400/70", rotation: -42, shape: "circle", finalY: 92, origin: "right" },
-  { id: 36, x: 98, delay: 0.35, duration: 1.75, size: "10px", color: "bg-primary/60", rotation: 28, shape: "square", finalY: 35, origin: "right" },
+  // Right cluster (originates from top-right card corner, spreads upward and outward)
+  { id: 11, x: 72, delay: 0.1, duration: 1.9, size: "10px", color: "bg-sky-400/60", rotation: -25, shape: "rectangle", finalY: 10, origin: "right" },
+  { id: 12, x: 80, delay: 0.3, duration: 2.1, size: "12px", color: "bg-emerald-400/70", rotation: 40, shape: "circle", finalY: 22, origin: "right" },
+  { id: 13, x: 88, delay: 0.2, duration: 1.7, size: "8px", color: "bg-violet-400/60", rotation: -50, shape: "square", finalY: 5, origin: "right" },
+  { id: 14, x: 74, delay: 0.25, duration: 2.0, size: "10px", color: "bg-rose-400/60", rotation: 35, shape: "circle", finalY: 32, origin: "right" },
+  { id: 15, x: 85, delay: 0.4, duration: 1.8, size: "10px", color: "bg-amber-400/70", rotation: -20, shape: "rectangle", finalY: 45, origin: "right" },
+  { id: 16, x: 92, delay: 0.15, duration: 1.9, size: "10px", color: "bg-primary/60", rotation: 55, shape: "square", finalY: 18, origin: "right" },
+  { id: 17, x: 76, delay: 0.3, duration: 2.2, size: "8px", color: "bg-sky-400/60", rotation: -40, shape: "circle", finalY: 40, origin: "right" },
+  { id: 18, x: 86, delay: 0.1, duration: 1.6, size: "12px", color: "bg-emerald-400/60", rotation: 25, shape: "square", finalY: 12, origin: "right" },
+  { id: 19, x: 70, delay: 0.45, duration: 2.0, size: "10px", color: "bg-violet-400/70", rotation: -35, shape: "rectangle", finalY: 28, origin: "right" },
+  { id: 20, x: 90, delay: 0.2, duration: 1.8, size: "10px", color: "bg-rose-400/60", rotation: 50, shape: "circle", finalY: 3, origin: "right" },
+  { id: 29, x: 95, delay: 0.08, duration: 1.7, size: "9px", color: "bg-amber-400/65", rotation: -32, shape: "circle", finalY: 25, origin: "right" },
+  { id: 30, x: 68, delay: 0.38, duration: 2.15, size: "11px", color: "bg-primary/55", rotation: 22, shape: "square", finalY: 15, origin: "right" },
+  { id: 31, x: 82, delay: 0.18, duration: 1.65, size: "8px", color: "bg-sky-400/70", rotation: -48, shape: "rectangle", finalY: 8, origin: "right" },
+  { id: 32, x: 94, delay: 0.52, duration: 2.25, size: "10px", color: "bg-rose-400/65", rotation: 38, shape: "circle", finalY: 42, origin: "right" },
+  { id: 33, x: 73, delay: 0.28, duration: 1.85, size: "9px", color: "bg-emerald-400/65", rotation: -15, shape: "square", finalY: 6, origin: "right" },
+  { id: 34, x: 87, delay: 0.42, duration: 1.95, size: "12px", color: "bg-violet-400/60", rotation: 52, shape: "rectangle", finalY: 35, origin: "right" },
+  { id: 35, x: 78, delay: 0.15, duration: 2.05, size: "8px", color: "bg-amber-400/70", rotation: -42, shape: "circle", finalY: 48, origin: "right" },
+  { id: 36, x: 97, delay: 0.35, duration: 1.75, size: "10px", color: "bg-primary/60", rotation: 28, shape: "square", finalY: 14, origin: "right" },
 ];
 
-// Origin points for the shotgun effect
-const LEFT_ORIGIN = 12; // percentage from left
-const RIGHT_ORIGIN = 88; // percentage from left
+// Origin points for the shotgun effect - positioned at top corners of project cards
+const LEFT_ORIGIN_X = 25; // top-left card area
+const LEFT_ORIGIN_Y = 55; // percentage from top (where cards start)
+const RIGHT_ORIGIN_X = 75; // top-right card area
+const RIGHT_ORIGIN_Y = 55;
 
 function ConfettiPieceComponent({ piece }: { piece: ConfettiPiece }) {
   const shapeClasses = piece.shape === "circle"
@@ -93,7 +95,8 @@ function ConfettiPieceComponent({ piece }: { piece: ConfettiPiece }) {
     ? { height: piece.size, width: `calc(${piece.size} * 0.5)` }
     : { width: piece.size, height: piece.size };
 
-  const originX = piece.origin === "left" ? LEFT_ORIGIN : RIGHT_ORIGIN;
+  const originX = piece.origin === "left" ? LEFT_ORIGIN_X : RIGHT_ORIGIN_X;
+  const originY = piece.origin === "left" ? LEFT_ORIGIN_Y : RIGHT_ORIGIN_Y;
 
   return (
     <motion.div
@@ -103,24 +106,24 @@ function ConfettiPieceComponent({ piece }: { piece: ConfettiPiece }) {
       }}
       initial={{
         left: `${originX}%`,
-        bottom: "5%",
+        top: `${originY}%`,
         opacity: 0,
         rotate: 0,
       }}
       whileInView={{
         left: `${piece.x}%`,
-        bottom: `${100 - piece.finalY}%`,
+        top: `${piece.finalY}%`,
         opacity: 1,
         rotate: piece.rotation,
       }}
-      viewport={{ once: true, margin: "0px" }}
+      viewport={{ once: true, margin: "400px" }}
       transition={{
         left: {
           duration: piece.duration,
           delay: piece.delay,
           ease: [0.22, 1, 0.36, 1],
         },
-        bottom: {
+        top: {
           duration: piece.duration,
           delay: piece.delay,
           ease: [0.22, 1, 0.36, 1],
@@ -196,11 +199,21 @@ function AnimatedCounter({
     };
   }, [inView, value, duration, step]);
 
-  // Switch to M+ when we hit 1000K or more
+  // Switch to M+ when we hit 1000K or more, show decimals for smoother animation
   let displayValue: string;
   if (suffix === "K") {
     if (count >= 1000) {
-      displayValue = `${count / 1000}M+`;
+      const millions = count / 1000;
+      // ARR (with $ prefix) stays clean, others show decimals during animation
+      if (prefix === "$" || count === value) {
+        displayValue = `${millions}M+`;
+      } else {
+        displayValue = `${millions.toFixed(2)}M+`;
+      }
+    } else if (count >= 100 && prefix !== "$") {
+      // Show decimal M format for non-ARR counters
+      const millions = count / 1000;
+      displayValue = `${millions.toFixed(2)}M+`;
     } else {
       displayValue = `${count}K+`;
     }
