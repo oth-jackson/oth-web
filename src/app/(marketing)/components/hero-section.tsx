@@ -336,7 +336,7 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 0.3, ease: easing.smooth }}
             >
               Expert product design and engineering skills from people who&apos;ve helped
-              scale AI products to $1M+ ARR, hired teams, and shipped under pressure.
+              scale AI, Enterprise, and Gaming products to $1M+ ARR, built teams, and shipped under pressure.
             </motion.p>
 
             <motion.div
