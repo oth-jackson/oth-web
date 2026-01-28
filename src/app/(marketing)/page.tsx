@@ -22,6 +22,7 @@ import { CapabilitiesSection } from "@/app/(marketing)/components/capabilities-s
 import { TeamSection } from "@/app/(marketing)/components/team-section";
 import { AboutSection } from "@/app/(marketing)/components/about-section";
 import { ContactSection } from "@/app/(marketing)/components/contact-section";
+import { StatsSection } from "@/app/(marketing)/components/stats-section";
 
 // Types for better type safety
 interface FeaturedProjectsState {
@@ -145,6 +146,9 @@ export default function Home() {
       <div className="flex-1 space-y-0">
         {/* Hero Section */}
         <HeroSection />
+
+        {/* Stats Section */}
+        <StatsSection />
 
         {/* Capabilities Section */}
         <CapabilitiesSection />
