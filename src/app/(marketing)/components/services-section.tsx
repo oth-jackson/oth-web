@@ -46,7 +46,7 @@ export function ServicesSection() {
           </FadeInUp>
 
           {/* Right: Retainers */}
-          <FadeInUp className="flex items-start -mt-10">
+          <FadeInUp className="flex items-start lg:-mt-10">
             <div className="rounded-2xl bg-primary p-8 md:p-10 w-full">
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-primary-foreground">
                 Retainers

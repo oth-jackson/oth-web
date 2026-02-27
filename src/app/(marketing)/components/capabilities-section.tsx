@@ -106,13 +106,12 @@ const stripImages = [
   "/images/services/ai.jpg",
   "/images/services/arvr.jpg",
   "/images/services/uiux.jpg",
-  "/images/services/rapid.jpg",
   "/images/services/telecom.jpg",
 ];
 
 function ParallaxStrip({ scrollProgress }: { scrollProgress: MotionValue<number> }) {
   const count = stripImages.length;
-  const y = useTransform(scrollProgress, [0.3, 0.8], ["8%", `-${(count - 1) * 12}%`]);
+  const y = useTransform(scrollProgress, [0.25, 0.8], ["8%", `-${(count - 1) * 15}%`]);
 
   return (
     <motion.div
@@ -123,7 +122,13 @@ function ParallaxStrip({ scrollProgress }: { scrollProgress: MotionValue<number>
         <div
           key={i}
           className="w-full shrink-0 rounded-xl overflow-hidden"
-          style={{ aspectRatio: "1/1" }}
+          style={{
+            aspectRatio: "1/1",
+            maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent), linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
+            WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent), linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
+            maskComposite: "intersect",
+            WebkitMaskComposite: "destination-in",
+          }}
         >
           <img
             src={src}

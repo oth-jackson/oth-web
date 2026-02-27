@@ -295,8 +295,8 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15, ease: easing.smoothOut }}
             >
-              <span className="block">
-                Your AI{" "}
+              <span className="block md:inline">Your AI</span>{" "}
+              <span className="block md:inline">
                 {/* Hidden measurer element */}
                 <span
                   ref={measurerRef}
