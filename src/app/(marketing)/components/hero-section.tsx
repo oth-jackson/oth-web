@@ -296,7 +296,7 @@ export function HeroSection() {
               transition={{ duration: 0.7, delay: 0.15, ease: easing.smoothOut }}
             >
               <span className="block">
-                Your{" "}
+                Your AI{" "}
                 {/* Hidden measurer element */}
                 <span
                   ref={measurerRef}
