@@ -1,17 +1,8 @@
 "use client";
 
-import React, { useRef, useMemo, useState } from "react";
-import dynamic from "next/dynamic";
+import React, { useRef } from "react";
 import { motion, FadeInUp, easing } from "@/lib/motion";
-import { useScroll, useTransform, useMotionValueEvent, type MotionValue } from "framer-motion";
-
-const DiamondCanvas = dynamic(
-  () => import("./service-diamond").then((m) => m.DiamondCanvas) as any,
-  {
-    ssr: false,
-    loading: () => <div className="w-10 h-10 md:w-12 md:h-12" />,
-  }
-) as React.ComponentType<{ spinOffset?: number; scaleProgress?: number }>;
+import { useScroll, useTransform, type MotionValue } from "framer-motion";
 
 const services = [
   {
@@ -75,16 +66,9 @@ function ServiceRow({
   // Description reveals with the row
   const descOpacity = useTransform(scrollYProgress, [0.05, 0.2], [0, 1]);
 
-  // Diamond: expand up as row enters, shrink down as row exits
-  const diamondScale = useTransform(scrollYProgress, [0, 0.25, 0.45, 0.6], [0, 1, 1, 0.4]);
-  const [scaleValue, setScaleValue] = useState(0);
-  useMotionValueEvent(diamondScale, "change", (v) => setScaleValue(v));
-
   // Highlight sweep
   const highlightClip = useTransform(scrollYProgress, [0.2, 0.45], [100, 0]);
   const clipPath = useTransform(highlightClip, (v) => `inset(0 ${v}% 0 0)`);
-
-  const spinOffset = useMemo(() => index * 1.2, [index]);
 
   return (
     <motion.div
@@ -92,11 +76,8 @@ function ServiceRow({
       className="relative origin-left"
       style={{ opacity, filter, scale }}
     >
-      <div className="flex items-start gap-5 md:gap-6">
-        <div className="w-10 h-10 md:w-12 md:h-12 shrink-0 mt-1">
-          <DiamondCanvas spinOffset={spinOffset} scaleProgress={scaleValue} />
-        </div>
-        <div className="flex-1 min-w-0 pt-1">
+      <div>
+        <div className="min-w-0">
           <h3 className="text-3xl md:text-4xl font-semibold leading-tight tracking-tight relative inline-block">
             <span className="text-gray-300 dark:text-[#a0e8dd]">{service.title}</span>
             <motion.span
