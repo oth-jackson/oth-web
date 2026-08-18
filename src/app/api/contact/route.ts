@@ -2,8 +2,6 @@ import { ContactEmailTemplate } from '@/components/email-template';
 import { Resend } from 'resend';
 import { NextRequest } from 'next/server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 interface ContactFormData {
   name: string;
   email: string;
@@ -24,6 +22,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
       from: 'Otherwise Contact <onboarding@resend.dev>', // Update this to your verified domain
       to: ['jackson@otherwise.dev'],

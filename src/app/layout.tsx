@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/features/theme/components/theme-provider";
 import { cn } from "@/lib/style/cn";
@@ -12,6 +12,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-heading",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -97,6 +103,7 @@ export default function RootLayout({
         className={cn(
           geistSans.variable,
           geistMono.variable,
+          bricolage.variable,
           "antialiased flex flex-col min-h-screen font-sans"
         )}
         suppressHydrationWarning

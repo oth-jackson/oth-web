@@ -5,6 +5,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "oth-web",
+  "account_id": "0a378a74427a0f19845dec210cd9ca04",
   "main": ".open-next/worker.js",
   "compatibility_date": "2025-03-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
